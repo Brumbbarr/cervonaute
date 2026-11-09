@@ -1,5 +1,5 @@
 // Garde le site disponible hors connexion (train) : réseau d'abord, cache en secours.
-const CACHE = 'arene-v14';
+const CACHE = 'arene-v15';
 const FILES = ['./', 'index.html', 'progression.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'app-icon-v5-192.png', 'app-icon-v5-512.png', 'js/config.js', 'js/data.js', 'js/banque.js', 'js/banque-fr.js', 'js/banque-laniflex.js', 'js/banque-cours.js', 'js/recompenses.js', 'js/ui.js', 'js/emblem.js', 'js/pixel.js', 'js/traductions.js', 'js/lecons.js', 'js/generateurs.js', 'js/generateurs-fr.js', 'js/banque-plus.js'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });

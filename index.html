@@ -231,6 +231,17 @@ button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
  @keyframes glow{from{opacity:.3}to{opacity:.75}}
 }
 
+/* Cartes et collection */
+.carte{--rc:#9aa0ab;box-sizing:border-box;margin:10px auto 0;max-width:20rem;width:100%;border:2px solid var(--rc);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;text-align:left;background:linear-gradient(160deg,#2c3566,#1d2448);box-shadow:0 0 24px color-mix(in srgb,var(--rc) 35%,transparent)}
+.carte-h{display:flex;justify-content:space-between;align-items:center}.carte-h small{color:var(--mut)}
+.carte-img{aspect-ratio:16/9;border-radius:10px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--rc) 45%,transparent),#00000040);display:grid;place-items:center;overflow:hidden}
+.carte-img span{font-size:2.4rem;font-weight:900;color:#ffffffcc}.carte-img img{width:100%;height:100%;object-fit:cover}
+.carte b{font-size:1.2rem}.carte-tags{color:var(--mut);font-size:.75rem}.carte-desc{color:#dfe6ff;font-size:.88rem}
+.carte-ex{font-style:italic;color:#dfe6ff;font-size:.88rem}.carte-plus{font-size:.85rem;padding:8px;border-radius:8px;background:#ffffff10}
+.cnts{display:flex;flex-wrap:wrap;gap:6px}.cnt{display:flex;flex-direction:column;align-items:center;min-width:4.6rem;padding:6px 8px;border-radius:10px;border:1px solid var(--rc);font-size:.68rem;color:var(--mut)}.cnt b{color:var(--rc);font-size:.95rem}
+.filtres{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:8px}.fsel{font-size:.85rem;padding:9px 10px}
+button.mini{text-align:left;color:var(--fg);background:var(--panel);cursor:pointer}
+.det{max-height:90vh;overflow:auto}.det .carte{max-width:none}
 /* Salle d'entraînement */
 .salle-h b{display:block;font-size:1.05rem;margin:4px 0}.salle-h small{color:var(--mut)}
 .lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:10px}
@@ -332,10 +343,11 @@ function startMode(m){const st=elo(allAnswers());let pool=BANQUE.filter(q=>inMod
  const w=m.weak?q=>{const R=(st[q.n]||{R:100}).R;return Math.max(.2,Math.pow(1.008,325-R))*dw(q)}:dw;
  begin({kind:'mode',titre:m.nom,qs:pick(avecGen(pool,6),m.n,w)})}
 function startBoss(b){S.pendingBoss=b;S.screen='bossintro';render()}
-async function claimQuest(){const q=questDuJour();if(q.claimed||q.done<q.goal)return;const carte=tirerCarte(1,true,true,Date.now());
- const doc={date:today(),at:new Date().toISOString(),mode:'quete',titre:'Quête : '+q.id,boss:null,victoire:null,combo:0,carte,reponses:[]};
- S.m={kind:'quete',titre:'Quête du jour'};S.answers=[];S.carte=carte;S.carteNeuve=!collection().has(carte);S.chestOpen=false;S.succesNew=[];S.before=elo(allAnswers());S.showArena=false;S.saving='Sauvegarde…';S.screen='results';render();
- try{await Data.saveSession(doc);await reload();S.saving='Coffre ajouté à ta collection ✓'}catch(e){Data.queue.add(doc);sessions.push(doc);S.saving='Pas de réseau : coffre gardé sur ce téléphone.'}render()}
+async function claimQuest(){const q=questDuJour();if(q.claimed||q.done<q.goal)return;await ouvrirCoffre('quete',today()+'|'+q.id,'Quête du jour')}
+async function claimSerie(p){await ouvrirCoffre('serie',String(p),'Série de '+p+' jours')}
+async function ouvrirCoffre(type,ref,titre){S.m={kind:'quete',titre};S.answers=[];S.carte=null;S.chestOpen=false;S.succesNew=[];S.before=elo(allAnswers());S.showArena=false;S.saving='Ouverture du coffre…';S.screen='results';render();
+ try{const avant=succesOk();const r=await Data.ouvrir(type,ref);S.carte=r.carte_id;S.carteNeuve=r.neuve;S.exemplaires=r.exemplaires;applyCat(await Data.cartes());S.succesNew=succesOk().filter(x=>!avant.includes(x));S.saving='Carte ajoutée à ta collection ✓'}
+ catch(e){S.saving='Impossible d\'ouvrir le coffre : '+(e.message||'réseau indisponible')+'. Réessaie plus tard.'}render()}
 function launchBoss(b){const bm=q=>MODS[b.mod||'en'].test(q.n);let pool=BANQUE.filter(q=>bm(q)&&(!b.notions||b.notions.includes(q.n))&&q.d>=(b.dmin||2));if(pool.length<b.n)pool=BANQUE.filter(q=>bm(q)&&(!b.notions||b.notions.includes(q.n)));
  begin({kind:'boss',boss:b,titre:'Boss : '+b.nom,qs:pick(avecGen(pool,4),Math.min(b.n,pool.length+8)),lives:b.lives})}
 function startNotion(id){MOD=modOf(id);begin({kind:'mode',titre:'Entraînement : '+NOTIONS_NOMS[id],qs:pick(avecGen(BANQUE.filter(q=>q.n===id),15),10)})}
@@ -357,24 +369,41 @@ async function finish(){clearInterval(timerId);const boss=S.m.kind==='boss';cons
  S.showArena=arene(globalMmr(elo(allAnswers().concat(S.answers)))).n>arene(globalMmr(S.before)).n;render();
  S.succesAvant=succesOk();
  const score=S.answers.filter(a=>a.correct).length/S.answers.length;
- const merite=S.answers.length>=5&&(boss?won:score>=0.6);S.sansButin=!merite&&S.answers.length>=5;const carte=merite?tirerCarte(score,boss,won,Date.now()):null;S.carte=carte;S.carteNeuve=carte&&!collection().has(carte);
- const doc={date:today(),at:new Date().toISOString(),mode:S.m.kind,titre:S.m.titre,boss:boss?S.m.boss.id:null,victoire:boss?won:null,combo:S.best,carte,reponses:S.answers,synchro:false};
- sessions.push(doc);S.succesNew=succesOk().filter(id=>!S.succesAvant.includes(id));sessions.pop();
+ const merite=S.answers.length>=5&&(boss?won:score>=0.6);S.sansButin=!merite&&S.answers.length>=5;
+ const doc={date:today(),at:new Date().toISOString(),mode:S.m.kind,titre:S.m.titre,boss:boss?S.m.boss.id:null,victoire:boss?won:null,combo:S.best,carte:null,reponses:S.answers,coffre:merite?(boss?'boss':'session'):null};
  S.saving='Sauvegarde…';render();
- try{await Data.saveSession(doc);await reload();S.saving='Sauvegardé ✓ Ta page Progression est déjà à jour.'}
- catch(e){Data.queue.add(doc);sessions.push(doc);S.saving='Pas de réseau : session gardée sur ce téléphone, elle sera envoyée à ta prochaine ouverture.'}
+ try{const id=await Data.saveSession(doc);
+  if(merite){try{const r=await Data.ouvrir(doc.coffre,id);S.carte=r.carte_id;S.carteNeuve=r.neuve;S.exemplaires=r.exemplaires}catch(e){S.coffreErr=e.message||'erreur'}}
+  await reload();S.succesNew=succesOk().filter(id=>!S.succesAvant.includes(id));S.saving='Sauvegardé ✓ Ta page Progression est déjà à jour.'+(S.coffreErr?' (Coffre non ouvert : '+S.coffreErr+')':'');S.coffreErr=null}
+ catch(e){Data.queue.add(doc);sessions.push(doc);S.saving='Pas de réseau : session gardée sur ce téléphone.'+(merite?' Ton coffre sera ouvert à ta prochaine connexion.':'')}
  render()}
 
 // ---- rewards
-function collection(){return new Set(sessions.map(s=>s.carte).filter(Boolean))}
+let CAT={cartes:[],raretes:[],familles:[],matieres:[],collection:[],recompenses:[]};
+function applyCat(c){if(!c||!c.cartes)return;CAT=c;window.CARTES=c.cartes.map(x=>({...x,r:x.rarete,en:x.titre,fr:x.contenu,ex:x.exemple}));window.RARETES=Object.fromEntries(c.raretes.map(r=>[r.id,{c:r.couleur,nom:r.nom,ordre:r.ordre,taux:+r.taux}]))}
+try{applyCat(JSON.parse(localStorage.getItem('arene-cartes')))}catch(_){}
+function collection(){return new Set(CAT.collection.map(x=>x.carte_id))}
+function exemplaires(id){const x=CAT.collection.find(c=>c.carte_id===id);return x?x.exemplaires:0}
+const PALIERS=[3,7,14,30,60,100];
+function serieDispo(){const sj=stats().serie;const pris=new Set(CAT.recompenses.filter(r=>r.type==='serie').map(r=>r.ref));return PALIERS.filter(p=>p<=sj&&!pris.has(String(p))).pop()||null}
 function stats(){const all=allAnswers(),st=elo(all);const jours=[...new Set(all.map(a=>a.date))].sort();let serie=jours.length?1:0;for(let i=jours.length-1;i>0;i--){if((new Date(jours[i])-new Date(jours[i-1]))/864e5===1)serie++;else break}
  let combo=0,c=0;sessions.forEach(s=>(s.reponses||[]).forEach(a=>{c=a.correct?c+1:0;combo=Math.max(combo,c)}));
  const bw=new Set(sessions.filter(s=>s.boss&&s.victoire).map(s=>s.boss));const col=collection();const cl=Object.entries(st).filter(([,x])=>x.n>=3).map(([k])=>k);
- return {sessions:sessions.length,parfaites:sessions.filter(s=>(s.reponses||[]).length>=8&&s.reponses.every(a=>a.correct)).length,combo,boss:sessions.filter(s=>s.boss&&s.victoire).length,bossDiff:bw.size,bossTotal:BOSSES.length,questions:all.length,serie,arene:arene(globalMmr(st)).n,lx:cl.filter(k=>k.startsWith('lx-')).length,fr:cl.filter(k=>k.startsWith('fr-')).length,en:cl.filter(k=>!k.startsWith('fr-')).length,cartes:col.size,legendaires:[...col].filter(id=>(CARTES.find(x=>x.id===id)||{}).r==='légendaire').length}}
+ return {sessions:sessions.length,parfaites:sessions.filter(s=>(s.reponses||[]).length>=8&&s.reponses.every(a=>a.correct)).length,combo,boss:sessions.filter(s=>s.boss&&s.victoire).length,bossDiff:bw.size,bossTotal:BOSSES.length,questions:all.length,serie,arene:arene(globalMmr(st)).n,lx:cl.filter(k=>k.startsWith('lx-')).length,fr:cl.filter(k=>k.startsWith('fr-')).length,en:cl.filter(k=>!k.startsWith('fr-')).length,cartes:col.size,legendaires:[...col].filter(id=>((RARETES[(CARTES.find(x=>x.id===id)||{}).r]||{}).ordre||0)>=6).length}}
 function succesOk(){const s=stats();return SUCCES.filter(x=>x.f(s)).map(x=>x.id)}
 let TITRE='';try{TITRE=localStorage.getItem('arene-titre')||''}catch(_){}
 function titreActuel(){const ok=succesOk();const t=SUCCES.find(x=>x.titre===TITRE&&ok.includes(x.id));return t?t.titre:(ok.length?SUCCES.find(x=>x.id===ok[ok.length-1]).titre:'Nouveau joueur')}
-function carteHtml(id,neuve){const c=CARTES.find(x=>x.id===id);if(!c)return '';const col=RARETES[c.r].c;return `<div class="carte pop" style="border-color:${col};box-shadow:0 0 24px ${col}44"><span class="label" style="color:${col}">${c.r}${neuve?' · NOUVELLE':''}</span><b>${esc(c.en)}</b><span>${esc(c.fr)}</span><i>${esc(c.ex)}</i></div>`}
+function nomFam(id){return (CAT.familles.find(f=>f.id===id)||{}).nom||id}
+function nomMat(id){return (CAT.matieres.find(f=>f.id===id)||{}).nom||id}
+function carteHtml(id,neuve,complet){const c=CARTES.find(x=>x.id===id);if(!c)return '';const R=RARETES[c.r]||{c:'#9aa0ab',nom:c.r};const col=R.c;const nb=exemplaires(id);
+ return `<div class="carte pop" style="--rc:${col}"><div class="carte-h"><span class="label" style="color:${col}">${esc(R.nom)}${neuve?' · NOUVELLE':nb>1?' · ×'+nb:''}</span><small>n° ${c.num}</small></div>
+ <div class="carte-img" aria-hidden="true">${c.image?`<img src="${esc(c.image)}" alt="">`:`<span>${esc(nomFam(c.famille)).charAt(0)}</span>`}</div>
+ <b>${esc(c.titre)}</b><small class="carte-tags">${esc(nomFam(c.famille))} · ${esc(nomMat(c.matiere))}</small>
+ ${c.description?`<i class="carte-desc">${esc(c.description)}</i>`:''}
+ ${c.contenu?`<span>${esc(c.contenu)}</span>`:''}
+ ${c.exemple?`<span class="carte-ex">« ${esc(c.exemple)} »</span>`:''}
+ ${complet&&c.anecdote?`<span class="carte-plus">💡 ${esc(c.anecdote)}</span>`:''}
+ ${complet&&c.astuce?`<span class="carte-plus">🧠 ${esc(c.astuce)}</span>`:''}</div>`}
 function areneBanner(g){const a=arene(g),i=ARENES.indexOf(a),nx=ARENES[i+1];const pct=nx?Math.max(3,Math.min(100,100*(g-a.min)/(nx.min-a.min))):100;
  return `<div class="arena"><span class="deco" aria-hidden="true">${a.deco}</span><div><span class="label" style="color:${a.acc}">Arène ${a.n}</span><b>${esc(a.nom)}</b><div class="bar" style="margin-top:6px"><div style="width:${pct}%;background:${a.acc}"></div></div><small>${nx?(Math.ceil(nx.min-g)+' pts avant '+esc(nx.nom)):'Arène maximum atteinte'} · questions ${['faciles','plutôt faciles','équilibrées','plus dures','difficiles','très dures','de haut niveau','d\'expert','de légende'][i]}</small></div></div>`}
 
@@ -387,7 +416,7 @@ function questDuJour(){const st=elo(allAnswers());const ids=Object.keys(NOTIONS_
  let h=0;for(const ch of today()+MOD)h=(h*31+ch.charCodeAt(0))>>>0;
  const id=started.length?started[h%Math.min(3,started.length)]:ids[h%ids.length];
  const done=todayAnswers().filter(a=>a.notion===id&&a.correct).length;
- const claimed=sessions.some(s=>s.mode==='quete'&&s.date===today()&&s.titre===('Quête : '+id));
+ const claimed=CAT.recompenses.some(r=>r.type==='quete'&&r.ref.startsWith(today()+'|'))||sessions.some(s=>s.mode==='quete'&&s.date===today());
  return {id,goal:6,done:Math.min(6,done),claimed}}
 function courbe7(){const all=allAnswers();const out=[];for(let k=6;k>=0;k--){const d=new Date();d.setDate(d.getDate()-k);const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');out.push({d:ds,v:globalMmr(elo(all.filter(a=>a.date<=ds))),n:all.filter(a=>a.date===ds).length})}return out}
 function sparkSvg(pts){const vs=pts.map(p=>p.v),lo=Math.min(...vs)-10,hi=Math.max(...vs)+10,W=300,H=70;const x=i=>10+i*(W-20)/(pts.length-1),y=v=>H-8-(v-lo)/(hi-lo||1)*(H-16);
@@ -406,7 +435,7 @@ function hero(g,cl,k){const a=arene(g),i=ARENES.indexOf(a),nx=ARENES[i+1];const 
 function lobby(){const st=elo(allAnswers()),g=globalMmr(st),cl=Object.values(st).some(x=>x.n>=3),k=rang(g);
  const s=stats(),q=questDuJour(),tA=todayAnswers().length;
  const ids=Object.keys(NOTIONS_NOMS).filter(id=>MODS[MOD].test(id)&&st[id]&&st[id].n>0).sort((a,b)=>st[a].R-st[b].R);const pire=ids[0];
- const col=collection(),last=[...sessions].reverse().find(x=>x.carte);
+ const col=collection(),lastR=[...CAT.recompenses].pop(),last=lastR?{carte:lastR.carte_id}:null,palier=serieDispo();
  return `${hero(g,cl,k)}
  ${routeHtml(g)}
  ${!ready?'<div class="card note">Connexion à ta progression…</div>':''}${saveErr?`<div class="card warn">${esc(saveErr)}</div>`:''}
@@ -416,7 +445,8 @@ function lobby(){const st=elo(allAnswers()),g=globalMmr(st),cl=Object.values(st)
   <div class="row2"><small>${q.done}/${q.goal} · récompense : un coffre (carte rare ou mieux)</small>${q.claimed?'<span class="tag">Coffre obtenu ✓</span>':q.done>=q.goal?'<button class="go sm" data-act="claim">🎁 Ouvrir le coffre</button>':`<button class="go sm" data-notion="${q.id}">Jouer</button>`}</div></div>
  <div class="card"><div class="row2"><span class="label">Tes points · 7 jours</span><small>${s.questions} questions au total</small></div>${sparkSvg(courbe7())}</div>
  ${pire?`<div class="card revenge"><span class="label" style="color:var(--loss)">💢 Revanche</span><div class="row2"><div class="rv">${emb(st[pire].R,st[pire].n>=3)}<div><b>${esc(NOTIONS_NOMS[pire])}</b><small>${st[pire].n>=3?rang(st[pire].R).label:'Placement'} · ta notion la plus faible</small></div></div><button class="go sm" data-notion="${pire}">Revanche</button></div></div>`:''}
- <div class="card"><div class="row2"><span class="label">Collection</span><small>${col.size}/${CARTES.length} cartes</small></div><div class="bar" style="margin:8px 0 10px"><div style="width:${100*col.size/CARTES.length}%;background:#b05bff"></div></div>${last?carteHtml(last.carte,false):'<p class="note">Termine une session de 5 questions ou plus pour gagner ta première carte.</p>'}</div>
+ ${palier?`<div class="card quest ok"><span class="label" style="color:var(--gold)">🔥 Série de ${palier} jours</span><b>Ta régularité mérite un coffre !</b><div class="row2"><small>Récompense garantie de série</small><button class="go sm" data-act="serie" data-palier="${palier}">🎁 Ouvrir</button></div></div>`:''}
+ <div class="card"><div class="row2"><span class="label">Collection</span><small>${col.size}/${CARTES.length} cartes</small></div><div class="bar" style="margin:8px 0 10px"><div style="width:${100*col.size/Math.max(1,CARTES.length)}%;background:#b05bff"></div></div>${last?carteHtml(last.carte,false):'<p class="note">Termine une session de 5 questions ou plus pour gagner ta première carte.</p>'}<button class="go sm" data-act="collection" style="margin-top:10px">📖 Voir ma collection</button></div>
  </div>
  <button class="go big-play" data-act="jouer">⚔️ Jouer</button>`}
 
@@ -453,6 +483,17 @@ function lecon(){const id=S.lecon,L=LECONS[id];if(!L)return salle();const st=elo
  ${L.e&&L.e.length?`<h3>🗣️ Exemples</h3><div class="ex">${L.e.map(([a,b])=>`<div><b>${esc(a)}</b><small>🇫🇷 ${esc(b)}</small></div>`).join('')}</div>`:''}
  ${L.p&&L.p.length?`<h3>⚠️ Pièges</h3><ul class="pieges">${L.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</article>
  <button class="go" data-notion="${id}">🎯 S'entraîner sur cette notion (10 questions)</button>`}
+// ---- Écran Collection : filtres matière / famille / rareté / découvertes
+function collectionScreen(){const col=collection();const f=S.filtre||(S.filtre={m:'',f:'',r:'',d:''});
+ const liste=CARTES.filter(c=>(!f.m||c.matiere===f.m)&&(!f.f||c.famille===f.f)&&(!f.r||c.r===f.r)&&(!f.d||(f.d==='oui'?col.has(c.id):!col.has(c.id))));
+ const parR=CAT.raretes.map(r=>{const tot=CARTES.filter(c=>c.r===r.id).length,eu=CARTES.filter(c=>c.r===r.id&&col.has(c.id)).length;return `<span class="cnt" style="--rc:${r.couleur}"><b>${eu}/${tot}</b>${esc(r.nom)}</span>`}).join('');
+ const sel=(id,lbl,opts,v)=>`<select class="modsel fsel" data-filtre="${id}" aria-label="${lbl}"><option value="">${lbl} : toutes</option>${opts.map(o=>`<option value="${o.id}" ${o.id===v?'selected':''}>${esc(o.nom)}</option>`).join('')}</select>`;
+ return `<div class="hud"><button class="quit" data-act="profil">← Profil</button><span class="label" style="flex:1;text-align:center">📖 Collection · ${col.size}/${CARTES.length}</span></div>
+ <div class="card"><div class="cnts">${parR}</div></div>
+ <div class="filtres">${sel('m','Matière',CAT.matieres,f.m)}${sel('f','Famille',CAT.familles,f.f)}${sel('r','Rareté',CAT.raretes,f.r)}${sel('d','Cartes',[{id:'oui',nom:'Découvertes'},{id:'non',nom:'À découvrir'}],f.d)}</div>
+ <p class="note">${liste.length} carte(s) · touche une carte découverte pour la lire en entier.</p>
+ <div class="album">${liste.map(c=>{const R=RARETES[c.r]||{c:'#9aa0ab',nom:c.r};const nb=exemplaires(c.id);return col.has(c.id)?`<button class="mini" data-carte="${c.id}" style="border-color:${R.c}"><small style="color:${R.c}">n° ${c.num} · ${esc(R.nom)}${nb>1?' · ×'+nb:''}</small><b>${esc(c.titre)}</b><small>${esc(nomFam(c.famille))}</small></button>`:`<div class="mini lock" style="border-color:${R.c}55"><small>n° ${c.num}</small><b>?</b><small style="color:${R.c}">${esc(R.nom)}</small></div>`}).join('')}</div>
+ ${S.detail?`<div class="overlay" data-act="fermer"><div class="ov-card det">${carteHtml(S.detail,false,true)}<button class="go" data-act="fermer">Fermer</button></div></div>`:''}`}
 function tabbar(){const t=[['lobby','🏠','Accueil'],['jouer','⚔️','Jouer'],['salle','📚','Salle'],['profil','🏆','Profil']];
  return `<nav class="tabbar" aria-label="Navigation">${t.map(([s,i,l])=>`<button data-act="${s}" class="${S.screen===s?'on':''}"><span>${i}</span>${l}</button>`).join('')}<a href="progression.html"><span>📈</span>Progression</a></nav>`}
 
@@ -472,7 +513,7 @@ function profil(){const all=allAnswers(),st=elo(all),g=globalMmr(st),cl=Object.v
  ${areneBanner(g)}
  <div class="card"><span class="label">Titre affiché · touche pour changer</span><div class="chips" style="margin-top:8px">${SUCCES.filter(x=>succesOk().includes(x.id)).map(x=>`<button class="chip" data-titre="${esc(x.titre)}" ${x.titre===titreActuel()?'style="border-color:var(--gold);color:var(--gold)"':''}>${esc(x.titre)}</button>`).join('')||'<span class="note">Débloque un succès pour gagner ton premier titre.</span>'}</div></div>
  <div class="card"><span class="label">Succès · ${succesOk().length}/${SUCCES.length}</span><div class="list">${SUCCES.map(x=>{const ok=succesOk().includes(x.id);return `<div class="li" style="grid-template-columns:28px 1fr;opacity:${ok?1:.45}"><span style="font-size:1.2rem">${ok?'🏆':'🔒'}</span><div>${esc(x.nom)}<small>${esc(x.desc)} · titre « ${esc(x.titre)} »</small></div></div>`}).join('')}</div></div>
- <div class="card"><span class="label">Collection · ${collection().size}/${CARTES.length} cartes</span><div class="album">${CARTES.map(c=>collection().has(c.id)?`<div class="mini" style="border-color:${RARETES[c.r].c}"><b>${esc(c.en)}</b><small>${esc(c.fr)}</small></div>`:`<div class="mini lock" style="border-color:${RARETES[c.r].c}55"><b>?</b><small>${c.r}</small></div>`).join('')}</div></div>
+ <div class="card"><div class="row2"><span class="label">Collection</span><small>${collection().size}/${CARTES.length} cartes</small></div><button class="go sm" data-act="collection" style="margin-top:8px">📖 Ouvrir ma collection</button></div>
  ${routeHtml(g)}
  <button class="quit" data-act="logout" style="align-self:center">Se déconnecter</button>`}
 
@@ -502,10 +543,11 @@ function results(){const m=S.m,boss=m.kind==='boss',ok=S.answers.filter(a=>a.cor
 
 function render(){const app=document.getElementById('app');clearInterval(timerId);
  const ar=arene(globalMmr(elo(allAnswers())));document.body.style.background=ar.bg;document.body.style.backgroundAttachment='fixed';document.documentElement.style.setProperty('--arena',ar.acc);
- const V={login:loginScreen,lobby,jouer,salle,lecon,profil,bossintro:bossIntro,match,results};
- app.className='app m-'+S.screen;app.innerHTML=(V[S.screen]||lobby)()+(['lobby','jouer','salle','lecon','profil'].includes(S.screen)?tabbar():'');
+ const V={login:loginScreen,lobby,jouer,salle,lecon,profil,collection:collectionScreen,bossintro:bossIntro,match,results};
+ app.className='app m-'+S.screen;app.innerHTML=(V[S.screen]||lobby)()+(['lobby','jouer','salle','lecon','profil','collection'].includes(S.screen)?tabbar():'');
  if(S.screen==='lecon'&&!LUS.includes(S.lecon)){LUS.push(S.lecon);try{localStorage.setItem('arene-lus',JSON.stringify(LUS))}catch(_){}}
  const tr=document.getElementById('track');if(tr){const h=tr.querySelector('.here');if(h)tr.scrollLeft=h.offsetLeft-tr.clientWidth/2+46}
+ document.querySelectorAll('.fsel').forEach(x=>x.onchange=()=>{S.filtre[x.dataset.filtre]=x.value;render()});
  const ms=document.getElementById('modsel');if(ms)ms.onchange=()=>{MOD=ms.value;try{localStorage.setItem('arene-mod',MOD)}catch(_){}render()};
  if(S.screen==='login'){document.getElementById('loginf').onsubmit=async e=>{e.preventDefault();const m=document.getElementById('loginmsg');try{await Data.login(document.getElementById('email').value.trim());m.textContent='Lien envoyé ✓ Ouvre ta boîte mail sur cet appareil.'}catch(err){m.textContent='Envoi impossible : '+(err.message||'réessaie dans une minute.')}}}
  if(S.screen==='match'){const f=document.getElementById('fillf');if(f){f.onsubmit=e=>{e.preventDefault();const v=document.getElementById('fillin').value;if(v.trim())answer(v)};if(!S.answered)document.getElementById('fillin').focus()}
@@ -522,6 +564,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(b.dataset.act==='profil'){S.screen='profil';render()}
  else if(b.dataset.act==='jouer'){S.screen='jouer';render()}
  else if(b.dataset.act==='salle'){S.screen='salle';render()}
+ else if(b.dataset.act==='collection'){S.detail=null;S.screen='collection';render()}
+ else if(b.dataset.carte){S.detail=b.dataset.carte;render()}
+ else if(b.dataset.act==='fermer'){S.detail=null;render()}
+ else if(b.dataset.act==='serie'){claimSerie(+b.dataset.palier)}
  else if(b.dataset.lecon){S.lecon=b.dataset.lecon;S.screen='lecon';render()}
  else if(b.dataset.act==='son'){SFX.toggle();render()}
  else if(b.dataset.act==='fight'){const bb=S.pendingBoss;S.pendingBoss=null;launchBoss(bb)}
@@ -543,7 +589,7 @@ function fromHash(){const h=location.hash.slice(1);if(h.startsWith('n-')&&NOTION
 window.addEventListener('hashchange',fromHash);
 // ---- data
 render();setTimeout(()=>{if(!linked)fromHash()},1500);
-async function reload(){const d=await Data.load();base=d.base.map(r=>({...r,date:String(r.date).slice(0,10)}));sessions=d.sessions.map(s=>({...s,reponses:s.reponses.map(r=>({...r,date:String(r.date).slice(0,10)}))}));bossWins={};sessions.forEach(s=>{if(s.boss&&s.victoire)bossWins[s.boss]=(bossWins[s.boss]||0)+1})}
+async function reload(){try{applyCat(await Data.cartes())}catch(_){}const d=await Data.load();base=d.base.map(r=>({...r,date:String(r.date).slice(0,10)}));sessions=d.sessions.map(s=>({...s,reponses:s.reponses.map(r=>({...r,date:String(r.date).slice(0,10)}))}));bossWins={};sessions.forEach(s=>{if(s.boss&&s.victoire)bossWins[s.boss]=(bossWins[s.boss]||0)+1})}
 async function boot(){
  if(!Data.ready){saveErr='Le site n\'est pas encore relié à la base de données (config.js).';ready=true;render();return}
  const u=await Data.user();if(!u){S.screen='login';ready=true;render();return}

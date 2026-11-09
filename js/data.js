@@ -31,6 +31,21 @@
       sessions.forEach((s) => { s.reponses = bySession[s.id] || []; });
       return { reponses: all, sessions, base: all.filter((r) => !r.session_id) };
     },
+    // Catalogue des cartes (commun) + collection et récompenses du joueur. Mis en cache pour le hors-connexion.
+    async cartes() {
+      try {
+        const [c, r, f, m, col, rec] = await Promise.all([
+          sb.from('cartes').select('*').order('num'), sb.from('raretes').select('*').order('ordre'),
+          sb.from('familles').select('*').order('ordre'), sb.from('matieres').select('*').order('ordre'),
+          sb.from('collection').select('carte_id,exemplaires,decouverte_le'), sb.from('recompenses').select('type,ref,carte_id,rarete,neuve,cree_le').order('cree_le')]);
+        for (const x of [c, r, f, m, col, rec]) if (x.error) throw x.error;
+        const out = { cartes: c.data, raretes: r.data, familles: f.data, matieres: m.data, collection: col.data, recompenses: rec.data };
+        try { localStorage.setItem('arene-cartes', JSON.stringify(out)); } catch (_) {}
+        return out;
+      } catch (e) { try { const c = JSON.parse(localStorage.getItem('arene-cartes')); if (c) return c; } catch (_) {} throw e; }
+    },
+    // Ouvre une récompense côté serveur : c'est lui qui vérifie et tire la carte.
+    async ouvrir(type, ref) { const { data, error } = await sb.rpc('ouvrir_recompense', { p_type: type, p_ref: String(ref) }); if (error) throw error; return data; },
     async notions() { const { data, error } = await sb.from('notions').select('*'); if (error) throw error; return data; },
 
     async saveSession(doc) {
@@ -53,7 +68,10 @@
     async flush() {
       let q = []; try { q = JSON.parse(localStorage.getItem('arene-file') || '[]'); } catch (_) {}
       const rest = [];
-      for (const d of q) { try { await Data.saveSession(d); } catch (_) { rest.push(d); } }
+      for (const d of q) {
+        try { const id = await Data.saveSession(d); if (d.coffre) { try { await Data.ouvrir(d.coffre, id); } catch (_) {} } }
+        catch (_) { rest.push(d); }
+      }
       try { localStorage.setItem('arene-file', JSON.stringify(rest)); } catch (_) {}
       return q.length - rest.length;
     }

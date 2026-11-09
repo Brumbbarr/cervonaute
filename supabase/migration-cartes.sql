@@ -88,7 +88,8 @@ grant select on public.matieres, public.familles, public.raretes, public.cartes,
 insert into public.raretes (id, nom, ordre, taux, couleur) values
  ('commune','Commune',1,40,'#9aa0ab'), ('peu_commune','Peu commune',2,25,'#5fd38a'), ('rare','Rare',3,16,'#5b8cff'),
  ('tres_rare','Très rare',4,9,'#36c9e0'), ('epique','Épique',5,5,'#b05bff'), ('legendaire','Légendaire',6,3,'#ffcf5a'),
- ('mythique','Mythique',7,1.5,'#ff5a8a'), ('divine','Divine',8,0.5,'#fff3b0')
+ ('mythique','Mythique',7,1.5,'#ff5a8a'), ('divine','Divine',8,0.5,'#fff3b0'),
+ ('transcendante','Transcendante',9,0.02,'#ff4dff')
 on conflict (id) do nothing;
 insert into public.familles (id, nom, description, ordre) values
  ('savoir','Savoir','Définitions, notions, vocabulaire, règles et méthodes à retenir.',1),
@@ -98,7 +99,7 @@ insert into public.familles (id, nom, description, ordre) values
 on conflict (id) do nothing;
 insert into public.matieres (id, nom, ordre) values
  ('anglais','Anglais',1), ('francais','Français',2), ('commerce','Commerce',3), ('marketing','Marketing',4),
- ('gestion','Gestion',5), ('culture','Culture générale',6), ('divers','Divers',7)
+ ('gestion','Gestion',5), ('culture','Culture générale',6), ('divers','Divers',7), ('insolite','Insolite',8)
 on conflict (id) do nothing;
 insert into public.reglages (cle, valeur) values
  ('recompenses', '{"min_reponses":5,"score_min":0.6,"max_par_jour":25,
@@ -106,6 +107,9 @@ insert into public.reglages (cle, valeur) values
    "min_par_type":{"session":"commune","boss":"rare","quete":"peu_commune"},
    "series":{"3":"peu_commune","7":"rare","14":"tres_rare","30":"epique","60":"legendaire","100":"mythique"}}')
 on conflict (cle) do nothing;
+
+-- Rareté Transcendante : 0,02 % pris sur la Commune (total toujours 100 %)
+update public.raretes set taux = 39.98 where id = 'commune' and taux = 40;
 
 -- ---------- Fonction serveur : ouvrir une récompense
 create or replace function public.ouvrir_recompense(p_type text, p_ref text)

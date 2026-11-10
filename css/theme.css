@@ -1,0 +1,60 @@
+/* =====================================================================
+   THÈMES DE L'ARÈNE
+   Chaque thème est un bloc [data-theme="..."] sur <html>. Les composants
+   n'utilisent QUE ces variables. Pour ajouter un thème : copier le bloc
+   « clair », changer les valeurs, et poser data-theme="nom" sur <html>.
+   ===================================================================== */
+:root, [data-theme="clair"], :root:has(body.v8), body.v8 {
+  color-scheme: light;
+  /* Fond et neutres */
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface-soft: #EEF4F4;
+  --line: rgba(20,58,66,0.10);
+  --shadow-card: 0 2px 10px -4px rgba(20,58,66,0.12);
+  --shadow-hero: 0 16px 36px -22px rgba(20,58,66,0.45);
+  --shadow-raise: 0 18px 30px -16px rgba(20,58,66,0.4);
+  /* Pétrole : texte, illustrations, défi */
+  --petrol: #143A42;
+  --petrol-strong: #17414A;
+  --petrol-mid: #3E6E77;
+  --petrol-mid-2: #2E5A63;
+  --petrol-text-2: #4F6A70;
+  --petrol-pale: #9CCBD2;
+  --petrol-pale-2: #B6DCE1;
+  --petrol-pale-3: #6FA9B2;
+  /* Cyan : progression, action, en cours */
+  --cyan: #1FB5C9;
+  --cyan-deep: #1A9FB2;
+  --cyan-text: #0B7586;
+  --cyan-light: #6FDCE8;
+  --cyan-light-2: #8FE4EE;
+  --cyan-tint: #DDF4F7;
+  --cyan-tint-2: #E3EFF1;
+  --cyan-sky: #BFEBF1;
+  --cyan-sky-2: #E9F7F8;
+  --cyan-ink: #0E3440;
+  /* Cuivre : récompense, prestige, série */
+  --copper: #E08A57;
+  --copper-text: #A4582E;
+  --copper-light: #F2B48A;
+  --copper-tint: #FBE7DA;
+  --copper-tint-2: #FDF4EE;
+  --copper-tint-3: #F3EAE2;
+  --copper-sun: #FBD3B8;
+  --copper-ink: #4F3A2E;
+  --copper-dark: #7E4728;
+  /* Fonctionnel */
+  --ok: var(--cyan-text);
+  --ko: var(--petrol-strong);
+  --warn: var(--copper-text);
+  /* Typographie */
+  --font-title: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-text: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+  /* Rayons et durées */
+  --r-hero: 24px;
+  --r-card: 20px;
+  --r-pill: 22px;
+  --t-fast: 180ms;
+}

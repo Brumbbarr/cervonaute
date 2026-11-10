@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr"><head>
+<html lang="fr" data-theme="clair"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Progression · Arène Icademie</title>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0a0f1c"><link rel="icon" href="icon-192.png" sizes="192x192"><link rel="apple-touch-icon" href="app-icon-v5-192.png">
@@ -7,12 +7,12 @@
 :root{color-scheme:dark;--font-anthropic-sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-anthropic-serif:Georgia,serif;
 --cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.05rem;--cds-font-size-title:1.9rem;--cds-font-weight-medium:600;
 --cds-gap-xs:.35rem;--cds-gap-sm:.6rem;--cds-gap-md:1rem;--cds-gap-lg:1.4rem;--cds-gap-xl:2rem;--cds-pad-xs:.35rem;--cds-pad-sm:.6rem;--cds-pad-md:.9rem;--cds-pad-lg:1.2rem;--cds-pad-xl:2rem;
---cds-radius:8px;--cds-dur-slow:.4s;--cds-ease-out:cubic-bezier(.2,.8,.2,1);--color-fg:#e9eef8;--color-bg:#0a0f1c;--color-panel:#121a2c;--color-border-line:#223050;--color-fg-muted:#8c98b3}
-html,body{margin:0;background:#0a0f1c;color:#e9eef8}
+--cds-radius:8px;--cds-dur-slow:.4s;--cds-ease-out:cubic-bezier(.2,.8,.2,1);--color-fg:var(--petrol);--color-bg:var(--bg);--color-panel:var(--surface);--color-border-line:var(--line);--color-fg-muted:var(--petrol-text-2)}
+html,body{margin:0;background:var(--bg);color:var(--petrol);font-family:var(--font-text)}
 .tk svg{display:block}
 .px-glow{filter:drop-shadow(0 0 4px var(--pg))}
-@media (prefers-reduced-motion:no-preference){.px-sparkle rect{animation:pxblink 1.4s steps(2) infinite}.px-flame.f2{animation:pxflip .5s steps(1) infinite}.px-flame.f1{animation:pxflip .5s steps(1) infinite reverse}@keyframes pxblink{50%{opacity:0}}@keyframes pxflip{50%{opacity:0}}}.shim-msg{max-width:30rem;margin:3rem auto;padding:1.2rem;border:1px solid #223050;border-radius:10px;background:#121a2c;font-family:system-ui,sans-serif;text-align:center}
-.shim-msg a{color:#8fb0ff}
+@media (prefers-reduced-motion:no-preference){.px-sparkle rect{animation:pxblink 1.4s steps(2) infinite}.px-flame.f2{animation:pxflip .5s steps(1) infinite}.px-flame.f1{animation:pxflip .5s steps(1) infinite reverse}@keyframes pxblink{50%{opacity:0}}@keyframes pxflip{50%{opacity:0}}}.shim-msg{max-width:30rem;margin:3rem auto;padding:1.2rem;border:0;border-radius:var(--r-card);background:var(--surface);box-shadow:var(--shadow-card);font-family:var(--font-text);text-align:center;color:var(--petrol)}
+.shim-msg a{color:var(--cyan-text)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -24,7 +24,7 @@ html,body{margin:0;background:#0a0f1c;color:#e9eef8}
 (function(){
   const calcs=[],draws={},store={};
   window.dash={
-    colors:['#3d7bff','#7a5cff','#34d27b','#ffcf5a','#ff5a6e','#8ff0e0','#e3a6ff','#f0a66a'],
+    colors:['var(--cyan)','var(--copper)','var(--petrol-mid)','var(--cyan-light)','var(--copper-light)','var(--petrol-pale-3)','var(--cyan-text)','var(--copper-text)'],
     calc(id,o){calcs.push({id,...o})},
     draw(name,fn){if(fn)draws[name]=fn;else runDraw(name)},
     data(id){return store[id]||{status:'loading',data:[]}},
@@ -39,6 +39,20 @@ html,body{margin:0;background:#0a0f1c;color:#e9eef8}
   let w=innerWidth;addEventListener('resize',()=>{if(Math.abs(innerWidth-w)>40){w=innerWidth;Object.keys(draws).forEach(runDraw)}});
 })();
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/theme.css">
+<style>/* DA V8 : les variables du tableau de bord pointent vers le thème */
+.tk.tk{--bg:inherit;--line:inherit;--panel:var(--surface);--panel2:var(--surface-soft);--fg:var(--petrol);--mut:var(--petrol-text-2);--acc:var(--cyan);--acc2:var(--cyan-deep);--win:var(--cyan-text);--loss:var(--copper-text);font-family:var(--font-text)}
+.tk h1,.tk h2,.tk h3{font-family:var(--font-title);font-variation-settings:"wdth" 80;font-weight:800;color:var(--petrol)}
+.tk [class*="card"],.tk [class*="panel"]{border-color:transparent!important;box-shadow:var(--shadow-card);border-radius:var(--r-card)}
+.tk-ava{color:var(--cyan-ink)}
+.tk text{fill:var(--petrol-text-2)}.tk .tick line{stroke:var(--line)}
+.tk .tk-banner{background:linear-gradient(160deg,var(--cyan-tint),var(--bg) 70%);border-bottom:0}
+.tk .tk-badge{background:var(--surface);border:0;box-shadow:var(--shadow-card)}
+.tk .tk-train,.tk .tk-play{color:var(--cyan-ink)!important;background:linear-gradient(120deg,var(--cyan),var(--cyan-deep))!important;border:0!important;min-height:44px;display:inline-flex;align-items:center;padding:0 18px;border-radius:var(--r-pill);font-weight:700;text-decoration:none}
+.tk .tk-xp{background:var(--cyan-tint-2)}
+.tk .tk-row:hover{background:var(--surface-soft)}
+.tk .tk-tip{background:var(--surface);color:var(--petrol);box-shadow:var(--shadow-card)}
+</style>
 </head><body>
 <div id="dash-root">
 
@@ -118,7 +132,7 @@ html,body{margin:0;background:#0a0f1c;color:#e9eef8}
   .tk-ladder { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.5rem), 1fr)); gap: .5rem; }
   .tk-step { display: flex; flex-direction: column; align-items: center; gap: .15rem; text-align: center; font-size: .74rem; padding: .5rem .25rem; border-radius: 8px; border: 1px solid transparent; }
   .tk-step svg { width: 3.2rem; height: 3.2rem; }
-  .tk-step.on { border-color: var(--acc); background: #3d7bff14; }
+  .tk-step.on { border-color: var(--acc); background: var(--cyan-tint); }
   .tk-step span { color: var(--mut); font-variant-numeric: tabular-nums; }
   .tk details { color: var(--mut); font-size: .8rem; }
   .tk details summary { cursor: pointer; color: var(--fg); font-weight: 700; }
@@ -152,7 +166,7 @@ html,body{margin:0;background:#0a0f1c;color:#e9eef8}
         <a href="#notions">Notions</a>
         <a href="#sessions">Sessions</a>
         <a href="#paliers">Rangs</a>
-        <a href="index.html" class="tk-play">▶ Jouer dans l'Arène</a>
+        <a href="index.html" class="tk-play">Jouer dans l'Arène</a>
       </nav>
     </div>
   </header>
@@ -514,16 +528,16 @@ html,body{margin:0;background:#0a0f1c;color:#e9eef8}
       const top = T()[i + 1] ? T()[i + 1].min : 9999; const a = Math.max(t.min, lo), b = Math.min(top, hi);
       if (b <= a) return;
       svg.append('rect').attr('x', m.l).attr('width', W - m.l - m.r).attr('y', y(b)).attr('height', y(a) - y(b)).attr('fill', t.c1).attr('opacity', .08);
-      svg.append('text').attr('x', W - m.r - 4).attr('y', y(b) + 12).attr('text-anchor', 'end').attr('fill', '#8c98b3').style('font-size', '11px').text(t.nom);
+      svg.append('text').attr('x', W - m.r - 4).attr('y', y(b) + 12).attr('text-anchor', 'end').attr('fill', 'var(--petrol-text-2)').style('font-size', '11px').text(t.nom);
     });
-    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r))).attr('font-size', null).attr('font-family', null).call((g) => { g.select('.domain').remove(); g.selectAll('line').attr('stroke', '#223050'); g.selectAll('text').attr('fill', '#8c98b3').style('font-size', '11px'); });
-    if (rows.length > 1) svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.min(rows.length, 6)).tickFormat(d3.utcFormat('%d/%m'))).attr('font-size', null).attr('font-family', null).call((g) => { g.select('.domain').attr('stroke', '#223050'); g.selectAll('text').attr('fill', '#8c98b3').style('font-size', '11px'); });
+    svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - m.l - m.r))).attr('font-size', null).attr('font-family', null).call((g) => { g.select('.domain').remove(); g.selectAll('line').attr('stroke', '#223050'); g.selectAll('text').attr('fill', 'var(--petrol-text-2)').style('font-size', '11px'); });
+    if (rows.length > 1) svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.min(rows.length, 6)).tickFormat(d3.utcFormat('%d/%m'))).attr('font-size', null).attr('font-family', null).call((g) => { g.select('.domain').attr('stroke', '#223050'); g.selectAll('text').attr('fill', 'var(--petrol-text-2)').style('font-size', '11px'); });
     const grad = svg.append('defs').append('linearGradient').attr('id', 'tkArea').attr('x1', 0).attr('x2', 0).attr('y1', 0).attr('y2', 1);
-    [[0, .35], [1, 0]].forEach(([o, op]) => grad.append('stop').attr('offset', o).attr('stop-color', '#3d7bff').attr('stop-opacity', op));
+    [[0, .35], [1, 0]].forEach(([o, op]) => grad.append('stop').attr('offset', o).attr('stop-color', 'var(--cyan)').attr('stop-opacity', op));
     if (rows.length > 1) svg.append('path').datum(rows).attr('fill', 'url(#tkArea)').attr('d', d3.area((d) => x(d.dt), H - m.b, (d) => y(d.points)));
-    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', '#3d7bff').attr('stroke-width', 2.5).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', d3.line((d) => x(d.dt), (d) => y(d.points)));
+    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', 'var(--cyan)').attr('stroke-width', 2.5).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', d3.line((d) => x(d.dt), (d) => y(d.points)));
     const tip = document.createElement('div'); tip.className = 'tk-tip'; tip.hidden = true; el.append(tip);
-    svg.selectAll('circle.pt').data(rows).join('circle').attr('class', 'pt').attr('cx', (d) => x(d.dt)).attr('cy', (d) => y(d.points)).attr('r', 5).attr('fill', '#3d7bff').attr('stroke', '#121a2c').attr('stroke-width', 2)
+    svg.selectAll('circle.pt').data(rows).join('circle').attr('class', 'pt').attr('cx', (d) => x(d.dt)).attr('cy', (d) => y(d.points)).attr('r', 5).attr('fill', 'var(--cyan)').attr('stroke', 'var(--surface)').attr('stroke-width', 2)
       .on('pointerenter', (ev, d) => { tip.hidden = false; tip.replaceChildren(); const s = document.createElement('span'); s.textContent = frDate(d.date); tip.append(s, document.createElement('br'), d.points + ' pts · ' + window.rkRang(d.points).label); tip.style.left = Math.min(Math.max(0, x(d.dt) - 70), W - 160) + 'px'; tip.style.top = Math.max(0, y(d.points) - 50) + 'px'; })
       .on('pointerleave', () => { tip.hidden = true; });
   });

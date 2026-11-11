@@ -43,7 +43,7 @@ window.BANQUE.push(
 {n:'fr-pp-accord',d:2,t:'mc',q:'Les commandes sont ___ demain.',o:['livré','livrés','livrées'],a:2,x:'Avec être : accord avec "les commandes" (féminin pluriel).'},
 {n:'fr-pp-accord',d:2,t:'mc',q:'Les offres que nous avons ___ ont plu.',o:['envoyé','envoyés','envoyées'],a:2,x:'Avec avoir, COD placé AVANT (que = les offres) → accord : envoyées.'},
 {n:'fr-pp-accord',d:3,t:'fill',q:'Accorde : "Les deux commerciales se sont ___ (rencontrer) au salon."',a:['rencontrées'],x:'Pronominal réciproque, COD "se" = elles → rencontrées.'},
-{n:'fr-pp-accord',d:3,t:'mc',q:'Quelle phrase est correcte ?',o:['La réunion que j\'ai organisé.','La réunion que j\'ai organisée.','La réunion que j\'ai organisés.','La réunion que j\'ai organiser.'],a:1,x:'COD "que" (= la réunion) avant avoir → organisée.'},
+{n:'fr-pp-accord',d:3,t:'mc',q:'Quelle phrase est correcte ?',o:['La réunion que j\'ai organisé.','La réunion que j\'ai organisée.','La réunion que j\'ai organisées.','La réunion que j\'ai organiser.'],a:1,x:'COD "que" (= la réunion) avant avoir → organisée.'},
 // futur / conditionnel
 {n:'fr-futur-cond',d:1,t:'mc',q:'Demain, je vous ___ le devis. (certain)',o:['enverrai','enverrais'],a:0,x:'Action certaine dans le futur → futur : -rai.'},
 {n:'fr-futur-cond',d:1,t:'mc',q:'Je ___ savoir si vous êtes disponible jeudi. (poli)',o:['voudrai','voudrais'],a:1,x:'Demande polie → conditionnel : -rais.'},
@@ -51,15 +51,15 @@ window.BANQUE.push(
 {n:'fr-futur-cond',d:2,t:'mc',q:'Quand j\'aurai mon diplôme, je ___ une promotion.',o:['demanderai','demanderais'],a:0,x:'Quand + futur → futur. "nous demanderons" → -rai.'},
 {n:'fr-futur-cond',d:3,t:'fill',q:'Conjugue "pouvoir" (demande polie) : "___-vous me rappeler ?"',a:['pourriez','Pourriez'],x:'Conditionnel de politesse : pourriez-vous.'},
 // accord sujet / verbe
-{n:'fr-accord-verbe',d:1,t:'mc',q:'Les clients ___ satisfaits.',o:['est','sont','es'],a:1,x:'Sujet pluriel → sont.'},
-{n:'fr-accord-verbe',d:2,t:'mc',q:'Le directeur et son adjoint ___ la réunion.',o:['anime','animent','animes'],a:1,x:'Deux sujets → pluriel : animent.'},
+{n:'fr-accord-verbe',d:1,t:'mc',q:'Les clients ___ satisfaits.',o:['est','sont','es','soient'],a:1,x:'Sujet pluriel → sont.'},
+{n:'fr-accord-verbe',d:2,t:'mc',q:'Le directeur et son adjoint ___ la réunion.',o:['anime','animent','animes','animerait'],a:1,x:'Deux sujets → pluriel : animent.'},
 {n:'fr-accord-verbe',d:2,t:'mc',q:'C\'est moi qui ___ le rapport.',o:['écrit','écris','écrivent'],a:1,x:'Qui reprend "moi" → 1re personne : j\'écris → écris.'},
 {n:'fr-accord-verbe',d:3,t:'mc',q:'Les produits que nous ___ sont fabriqués en France.',o:['vend','vendons','vendent'],a:1,x:'Le sujet de "vendre" est "nous" → vendons.'},
 {n:'fr-accord-verbe',d:3,t:'fill',q:'Conjugue au présent : "Chacun des vendeurs ___ (avoir) un objectif."',a:['a'],x:'Le sujet est "chacun" (singulier) → a.'},
 // mail pro
-{n:'fr-mail-pro',d:1,t:'mc',q:'Quelle formule ouvre un mail à un client que tu ne connais pas ?',o:['Salut,','Coucou,','Madame, Monsieur,','Yo,'],a:2,x:'Inconnu → Madame, Monsieur, (ou Bonjour Madame Dupont,).'},
-{n:'fr-mail-pro',d:1,t:'mc',q:'Quelle formule de fin est la plus adaptée ?',o:['Bisous','Cordialement,','A+','Bye'],a:1,x:'Cordialement est la formule pro standard.'},
-{n:'fr-mail-pro',d:2,t:'mc',q:'Quelle phrase est la plus professionnelle ?',o:['Je vous relance pour le devis.','Vous avez oublié de répondre !','Je me permets de revenir vers vous concernant le devis.','Alors, ce devis ?'],a:2,x:'"Je me permets de revenir vers vous" relance poliment.'},
+{n:'fr-mail-pro',d:1,t:'mc',q:'Quelle formule ouvre un mail à un client que tu ne connais pas ?',o:['Salut à vous,','Coucou à toute l\'équipe,','Madame, Monsieur,','Hello mon ami,'],a:2,x:'Inconnu → Madame, Monsieur, (ou Bonjour Madame Dupont,).'},
+{n:'fr-mail-pro',d:1,t:'mc',q:'Quelle formule de fin est la plus adaptée ?',o:['Gros bisous à toi,','Cordialement,','A+','Bye'],a:1,x:'Cordialement est la formule pro standard.'},
+{n:'fr-mail-pro',d:2,t:'mc',q:'Quelle phrase est la plus professionnelle ?',o:['Je vous relance encore une fois pour le devis envoyé lundi.','Vous avez visiblement oublié de répondre à mon dernier devis !','Je me permets de revenir vers vous concernant le devis.','Alors, ce devis, ça avance ou pas ?'],a:2,x:'"Je me permets de revenir vers vous" relance poliment.'},
 {n:'fr-mail-pro',d:2,t:'mc',q:'Quelle orthographe est correcte ?',o:['Ci-joint le devis.','Si-joint le devis.','Ci-joins le devis.','Si joint le devis.'],a:0,x:'Ci-joint, invariable en début de phrase.'},
 {n:'fr-mail-pro',d:3,t:'mc',q:'Quelle phrase est correcte ?',o:['Je reste à votre disposition pour tout renseignements.','Je reste à votre disposition pour tout renseignement.','Je reste a votre disposition pour tous renseignement.','Je reste à votre dispositions pour tout renseignement.'],a:1,x:'"tout renseignement" au singulier ; à (préposition).'},
 {n:'fr-mail-pro',d:3,t:'fill',q:'Corrige : "Je vous prie d\'agréer mes salutation distingué."',a:['je vous prie d\'agréer mes salutations distinguées.','je vous prie d\'agréer mes salutations distinguées','je vous prie d’agréer mes salutations distinguées.'],x:'Salutations distinguées : pluriel et féminin.'}

@@ -9,18 +9,18 @@
   // ---------- -s de la 3e personne / does
   const SUJ = [
     { en: 'My manager', fr: 'Mon manager', p: '3s' }, { en: 'Our sales rep', fr: 'Notre commercial', p: '3s' }, { en: 'The company', fr: "L'entreprise", p: '3s' },
-    { en: 'Laniflex', fr: 'Laniflex', p: '3s' }, { en: 'She', fr: 'Elle', p: '3s' }, { en: 'He', fr: 'Il', p: '3s' }, { en: 'The team', fr: "L'équipe", p: '3s' },
+    { en: 'She', fr: 'Elle', p: '3s' }, { en: 'He', fr: 'Il', p: '3s' }, { en: 'The team', fr: "L'équipe", p: '3s' },
     { en: 'Our clients', fr: 'Nos clients', p: '3p' }, { en: 'They', fr: 'Ils', p: '3p' }, { en: 'We', fr: 'Nous', p: '1p' }, { en: 'I', fr: 'Je', p: '1s' }, { en: 'You', fr: 'Tu', p: '2s' }
   ];
   const VERB = [
-    { b: 'sell', s: 'sells', o: 'strip curtains', fo: 'des rideaux à lanières', f: { '1s': 'vends', '2s': 'vends', '3s': 'vend', '1p': 'vendons', '3p': 'vendent' } },
+    { b: 'sell', s: 'sells', o: 'software', fo: 'des logiciels', f: { '1s': 'vends', '2s': 'vends', '3s': 'vend', '1p': 'vendons', '3p': 'vendent' } },
     { b: 'call', s: 'calls', o: 'new clients', fo: 'de nouveaux clients', f: { '1s': 'appelle', '2s': 'appelles', '3s': 'appelle', '1p': 'appelons', '3p': 'appellent' } },
     { b: 'visit', s: 'visits', o: 'the warehouse', fo: "l'entrepôt", f: { '1s': 'visite', '2s': 'visites', '3s': 'visite', '1p': 'visitons', '3p': 'visitent' } },
     { b: 'send', s: 'sends', o: 'quotes', fo: 'des devis', f: { '1s': 'envoie', '2s': 'envoies', '3s': 'envoie', '1p': 'envoyons', '3p': 'envoient' } },
     { b: 'go', s: 'goes', o: 'to Lyon', fo: 'à Lyon', f: { '1s': 'vais', '2s': 'vas', '3s': 'va', '1p': 'allons', '3p': 'vont' } },
     { b: 'watch', s: 'watches', o: 'the sales figures', fo: 'les chiffres de vente', f: { '1s': 'surveille', '2s': 'surveilles', '3s': 'surveille', '1p': 'surveillons', '3p': 'surveillent' } },
     { b: 'study', s: 'studies', o: 'marketing', fo: 'le marketing', f: { '1s': 'étudie', '2s': 'étudies', '3s': 'étudie', '1p': 'étudions', '3p': 'étudient' } },
-    { b: 'fix', s: 'fixes', o: 'the mounting rails', fo: 'les rails de fixation', f: { '1s': 'répare', '2s': 'répares', '3s': 'répare', '1p': 'réparons', '3p': 'réparent' } },
+    { b: 'fix', s: 'fixes', o: 'the printers', fo: 'les imprimantes', f: { '1s': 'répare', '2s': 'répares', '3s': 'répare', '1p': 'réparons', '3p': 'réparent' } },
     { b: 'deliver', s: 'delivers', o: 'the orders', fo: 'les commandes', f: { '1s': 'livre', '2s': 'livres', '3s': 'livre', '1p': 'livrons', '3p': 'livrent' } }
   ];
   const QUAND = [['every week', 'chaque semaine'], ['every Monday', 'chaque lundi'], ['every day', 'tous les jours'], ['twice a month', 'deux fois par mois'], ['on Fridays', 'le vendredi']];
@@ -29,9 +29,9 @@
     const s = R(SUJ), v = R(VERB), w = R(QUAND), is3 = s.p === '3s', kind = Math.random();
     if (kind < 0.45) return fill('3e-personne-does', 2, `Conjugue au présent : "${s.en} ___ (${v.b}) ${v.o} ${w[0]}."`, [is3 ? v.s : v.b],
       is3 ? `${s.en} = il / elle → le verbe prend -s : ${v.s}.` : `${s.en} n'est pas à la 3e personne du singulier → pas de -s : ${v.b}.`, `${elide(s.fr, v.f[s.p])} ${v.fo} ${w[1]}.`);
-    if (kind < 0.75) { const sl = s.en === 'I' || s.en === 'Laniflex' ? s.en : s.en.toLowerCase();
+    if (kind < 0.75) { const sl = s.en === 'I' ? s.en : s.en.toLowerCase();
       const good = (is3 ? 'Does' : 'Do') + ` ${sl} ${v.b} ${v.o}?`;
-      const sf = s.fr === 'Laniflex' ? s.fr : s.fr.charAt(0).toLowerCase() + s.fr.slice(1);
+      const sf = s.fr.charAt(0).toLowerCase() + s.fr.slice(1);
       const esq = (/^[aeéiouy]/i.test(sf) ? "Est-ce qu'" : 'Est-ce que ') + elide(sf, v.f[s.p]).replace(/^je /, 'je ');
       return mc('3e-personne-does', 2, `Choisis la bonne question : « ${esq} ${v.fo} ? »`, [good, (is3 ? 'Do' : 'Does') + ` ${sl} ${v.b} ${v.o}?`, (is3 ? 'Does' : 'Do') + ` ${sl} ${v.s} ${v.o}?`, `${is3 ? 'Is' : 'Are'} ${sl} ${v.b} ${v.o}?`].filter((x, i, a) => a.indexOf(x) === i), good,
         `${is3 ? 'Does' : 'Do'} + sujet + verbe SANS -s.`, `${esq} ${v.fo} ?`); }
@@ -44,7 +44,7 @@
   const IRR = [
     ['go', 'went', 'to Lyon', 'je suis allé à Lyon'], ['buy', 'bought', 'a new laptop', "j'ai acheté un nouvel ordinateur"], ['meet', 'met', 'a new supplier', "j'ai rencontré un nouveau fournisseur"],
     ['send', 'sent', 'the invoice', "j'ai envoyé la facture"], ['make', 'made', 'a big sale', "j'ai fait une grosse vente"], ['write', 'wrote', 'the report', "j'ai écrit le rapport"],
-    ['take', 'took', 'the train', "j'ai pris le train"], ['sell', 'sold', 'twenty curtains', "j'ai vendu vingt rideaux"], ['speak', 'spoke', 'to the director', "j'ai parlé au directeur"],
+    ['take', 'took', 'the train', "j'ai pris le train"], ['sell', 'sold', 'twenty licences', "j'ai vendu vingt licences"], ['speak', 'spoke', 'to the director', "j'ai parlé au directeur"],
     ['find', 'found', 'a new client', "j'ai trouvé un nouveau client"], ['give', 'gave', 'a presentation', "j'ai fait une présentation"], ['leave', 'left', 'the office early', "j'ai quitté le bureau tôt"],
     ['spend', 'spent', 'two hours on the phone', "j'ai passé deux heures au téléphone"], ['win', 'won', 'a contract', "j'ai gagné un contrat"], ['lose', 'lost', 'my badge', "j'ai perdu mon badge"],
     ['bring', 'brought', 'some samples', "j'ai apporté des échantillons"], ['think', 'thought', 'about the offer', "j'ai réfléchi à l'offre"], ['pay', 'paid', 'the supplier', "j'ai payé le fournisseur"]
@@ -56,7 +56,7 @@
 
   // ---------- Present perfect : since / for
   const ACT = [['I have worked here', 'Je travaille ici'], ['She has lived in Lyon', 'Elle vit à Lyon'], ['We have known this client', 'Nous connaissons ce client'], ['He has been our supplier', 'Il est notre fournisseur'],
-    ['They have used our curtains', 'Ils utilisent nos rideaux'], ['I have studied English', "J'étudie l'anglais"], ['The warehouse has been open', "L'entrepôt est ouvert"], ['We have had this machine', 'Nous avons cette machine']];
+    ['They have used our software', 'Ils utilisent notre logiciel'], ['I have studied English', "J'étudie l'anglais"], ['The warehouse has been open', "L'entrepôt est ouvert"], ['We have had this machine', 'Nous avons cette machine']];
   const DUR = [['three years', 'trois ans', 'for'], ['two months', 'deux mois', 'for'], ['a long time', 'longtemps', 'for'], ['ten days', 'dix jours', 'for'], ['six weeks', 'six semaines', 'for'],
     ['2021', '2021', 'since'], ['September', 'septembre', 'since'], ['last Monday', 'lundi dernier', 'since'], ['the beginning of the year', 'le début de l\'année', 'since'], ['January', 'janvier', 'since']];
   const gPP = () => { const [a, fa] = R(ACT), [d, fd, good] = R(DUR);
@@ -65,7 +65,7 @@
   // ---------- Articles a / an
   const NOMS = [['engineer', 'an', 'un ingénieur'], ['hour', 'an', 'une heure'], ['university', 'a', 'une université'], ['honest offer', 'an', 'une offre honnête'], ['European client', 'a', 'un client européen'],
     ['order', 'an', 'une commande'], ['quote', 'a', 'un devis'], ['invoice', 'an', 'une facture'], ['useful tool', 'a', 'un outil utile'], ['email', 'an', 'un mail'], ['one-year contract', 'a', "un contrat d'un an"],
-    ['urgent request', 'an', 'une demande urgente'], ['warehouse', 'a', 'un entrepôt'], ['easy question', 'an', 'une question facile'], ['MBA', 'an', 'un MBA'], ['strip curtain', 'a', 'un rideau à lanières']];
+    ['urgent request', 'an', 'une demande urgente'], ['warehouse', 'a', 'un entrepôt'], ['easy question', 'an', 'une question facile'], ['MBA', 'an', 'un MBA'], ['user guide', 'a', 'un guide utilisateur']];
   const gArt = () => { const [w, good, fr] = R(NOMS);
     return mc('articles', /hour|honest|university|European|one-year|MBA|useful/.test(w) ? 3 : 1, `We need ___ ${w}.`, ['a', 'an', 'the', 'Ø'], good,
       good === 'an' ? `« ${w} » commence par un SON voyelle → an.` : `« ${w} » commence par un SON consonne → a.`, `Nous avons besoin d'${fr.replace(/^un(e)? /, (m) => m)}.`.replace("d'un", "d'un").replace("d'une", "d'une")); };

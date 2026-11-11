@@ -92,13 +92,4 @@
   ];
   const en = window.BANQUE.slice(0, T.length);
   en.forEach((q, i) => { if (T[i] && !q.tr) q.tr = T[i]; });
-  // Anglais pro Laniflex : traductions des phrases en anglais
-  const LX = {
-    'Our curtains let forklifts pass through easily while keeping the cold in.': 'Nos rideaux laissent passer facilement les chariots élévateurs tout en gardant le froid à l\'intérieur.',
-    'They protect against dust, noise and insects.': 'Ils protègent contre la poussière, le bruit et les insectes.',
-    'Could you send me the width and height of the opening?': 'Pourriez-vous m\'envoyer la largeur et la hauteur de l\'ouverture ?',
-    'I understand. Our PVC lasts longer, so it saves you money over time.': 'Je comprends. Notre PVC dure plus longtemps, donc il vous fait économiser de l\'argent avec le temps.',
-    'The strips overlap by 50%.': 'Les lanières se chevauchent de 50 %.'
-  };
-  window.BANQUE.forEach((q) => { if (q.n && q.n.startsWith('lx-') && q.t === 'mc' && LX[q.o[q.a]]) q.tr = LX[q.o[q.a]]; });
 })();

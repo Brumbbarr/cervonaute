@@ -279,9 +279,10 @@ button.mini{text-align:left;color:var(--fg);background:var(--panel);cursor:point
 <script src="js/data.js"></script>
 <script src="js/banque.js"></script>
 <script src="js/banque-fr.js"></script>
-<script src="js/banque-laniflex.js"></script>
+<script src="js/banque-anglais-pro.js"></script>
 <script src="js/banque-plus.js"></script>
 <script src="js/banque-cours.js"></script>
+<script src="js/banque-en-presents.js"></script>
 <script src="js/traductions.js"></script>
 <script src="js/lecons.js"></script>
 <script src="js/generateurs.js"></script>
@@ -321,7 +322,7 @@ const modOf=n=>Object.keys(MODS).find(k=>k!=='en'&&MODS[k].test(n))||'en';
 let MOD='en';try{const m=localStorage.getItem('arene-mod');if(MODS[m])MOD=m}catch(_){}
 const inMod=q=>MODS[MOD].test(q.n);
 const BOSSES=[
- {id:'client',nom:'Le Client exigeant',sub:'Anglais pro Laniflex : produit, arguments, devis',notions:['lx-produit','lx-arguments','lx-client'],n:12,lives:3,time:35},
+ {id:'client',nom:'Le Client exigeant',sub:'Anglais pro : entreprise, présentation, clients',notions:['lx-produit','lx-arguments','lx-client'],n:12,lives:3,time:35},
  {id:'stratege',mod:'ucd',nom:'Le Directeur commercial',sub:'Stratégie, PAC, KPI, management, relation client',notions:null,n:15,lives:3,time:35,dmin:2},
  {id:'bruxelles',mod:'eu',nom:'Le Gardien de Bruxelles',sub:'Histoire, institutions, citoyenneté, frontières',notions:null,n:15,lives:3,time:30,dmin:2},
  {id:'diplomate',mod:'a3',nom:'Le Diplomate',sub:'Interculturel, droit du travail, RSE, inclusion',notions:null,n:12,lives:3,time:30,dmin:2},

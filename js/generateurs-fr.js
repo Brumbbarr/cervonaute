@@ -28,18 +28,18 @@
 
   G['fr-ces-ses'] = () => { const p = R(PERS), k = R([1, 2, 3, 4]);
     if (k === 1) return mc('fr-ces-ses', 1, `${p} a oublié ___ ${R(['dossiers', 'échantillons', 'clés', 'catalogues'])} au bureau.`, ['ces', 'ses', "c'est", "s'est"], 'ses', 'Les siens → ses (possessif).');
-    if (k === 2) return mc('fr-ces-ses', 1, `Regarde ___ ${R(['chiffres', 'résultats', 'commandes', 'rideaux'])} : ils sont excellents !`, ['ces', 'ses', "c'est", "s'est"], 'ces', 'On montre (ceux-là) → ces.');
+    if (k === 2) return mc('fr-ces-ses', 1, `Regarde ___ ${R(['chiffres', 'résultats', 'commandes', 'devis'])} : ils sont excellents !`, ['ces', 'ses', "c'est", "s'est"], 'ces', 'On montre (ceux-là) → ces.');
     if (k === 3) return mc('fr-ces-ses', 1, `___ ${R(['une très bonne offre', 'un client fidèle', 'le bon moment', 'une erreur de date'])}.`, ['Ces', 'Ses', "C'est", "S'est"], "C'est", 'Cela est → c\'est.');
     const v = R([['trompé de date', 'se tromper'], ['excusé du retard', "s'excuser"], ['déplacé chez le client', 'se déplacer'], ['occupé de la commande', "s'occuper"]]);
     return mc('fr-ces-ses', 2, `${p} ___ ${v[0]}.`, ['ces', 'ses', "c'est", "s'est"], "s'est", `Verbe pronominal (${v[1]}) → s'est.`); };
 
   G['fr-son-sont'] = () => { const p = R(PERS), k = R([1, 2, 3, 4]);
-    if (k === 1) return mc('fr-son-sont', 1, `Les ${R(['échantillons', 'rideaux', 'cartons', 'devis'])} ___ arrivés ce matin.`, ['son', 'sont'], 'sont', 'étaient arrivés → sont.');
+    if (k === 1) return mc('fr-son-sont', 1, `Les ${R(['échantillons', 'colis', 'cartons', 'devis'])} ___ arrivés ce matin.`, ['son', 'sont'], 'sont', 'étaient arrivés → sont.');
     if (k === 2) return mc('fr-son-sont', 1, `${p} présente ___ ${R(['projet', 'bilan', 'plan d\'action', 'catalogue'])} demain.`, ['son', 'sont'], 'son', 'mon projet / son projet → possessif.');
     if (k === 3) return mc('fr-son-sont', 1, `Les clients ___ ${R(['signé le contrat', 'validé le devis', 'payé la facture', 'appelé ce matin'])}.`, ['on', 'ont'], 'ont', 'avaient signé → ont.');
     return mc('fr-son-sont', 2, `___ ${R(['se retrouve à 14 h ?', 'commence la réunion ?', 'appelle le client ?', 'part à Lyon demain ?'])}`, ['On', 'Ont'], 'On', 'il se retrouve → on (pronom).'); };
 
-  const VERBES_ER = [['appel', 'le client'], ['envoy', 'le devis'], ['prépar', 'la commande'], ['contact', 'le fournisseur'], ['valid', 'le contrat'], ['factur', 'la prestation'], ['livr', 'les rideaux'], ['relanc', 'le prospect']];
+  const VERBES_ER = [['appel', 'le client'], ['envoy', 'le devis'], ['prépar', 'la commande'], ['contact', 'le fournisseur'], ['valid', 'le contrat'], ['factur', 'la prestation'], ['livr', 'les colis'], ['relanc', 'le prospect']];
   G['fr-e-er'] = () => { const [r, o] = R(VERBES_ER), rac = r === 'envoy' ? 'envoy' : r, k = R([1, 2, 3, 4]);
     const inf = rac + 'er', pp = rac + 'é';
     if (k === 1) return mc('fr-e-er', 1, `Je dois ___ ${o} avant midi.`, [inf, pp, rac + 'ez'], inf, 'Après « dois » → infinitif (je dois vendre).');
@@ -47,7 +47,7 @@
     if (k === 3) return mc('fr-e-er', 2, `Merci de ___ ${o} au plus vite.`, [inf, pp, rac + 'ez'], inf, 'Merci de vendre → infinitif.');
     return mc('fr-e-er', 2, `${o.charAt(0).toUpperCase() + o.slice(1)} a été ___ hier.`, [pp, inf, rac + 'ez'], pp, 'a été vendu → participe passé.'); };
 
-  const NOMSF = [['commande', 'f'], ['facture', 'f'], ['réunion', 'f'], ['offre', 'f'], ['devis', 'm'], ['rideau', 'm'], ['contrat', 'm'], ['échantillon', 'm']];
+  const NOMSF = [['commande', 'f'], ['facture', 'f'], ['réunion', 'f'], ['offre', 'f'], ['devis', 'm'], ['colis', 'm'], ['contrat', 'm'], ['échantillon', 'm']];
   const PP = [['livr', 'livré'], ['envoy', 'envoyé'], ['signé', 'signé'], ['valid', 'validé']];
   G['fr-pp-accord'] = () => { const [nom, g] = R(NOMSF), pl = Math.random() < 0.5, base = R(['livré', 'envoyé', 'validé', 'préparé', 'vérifié']), k = R([1, 2, 3]);
     const accord = base + (g === 'f' ? 'e' : '') + (pl ? 's' : ''), art = pl ? 'Les' : (/^[aeéiouh]/i.test(nom) ? "L'" : (g === 'f' ? 'La' : 'Le')), n2 = pl ? (nom === 'devis' ? 'devis' : nom.endsWith('eau') ? nom + 'x' : nom + 's') : nom;
@@ -62,7 +62,7 @@
     if (k === 2) return mc('fr-futur-cond', 2, `Si j'avais le temps, je ___ volontiers. (${inf})`, [fut, cond], cond, 'Si + imparfait → conditionnel (-rais).');
     return mc('fr-futur-cond', 2, `Quand le stock arrivera, je vous ___ . (${inf})`, [fut, cond], fut, 'Quand + futur → futur (-rai).'); };
 
-  const SUJV = [['Le directeur et son adjoint', 'animent', 'anime'], ['Les clients', 'sont', 'est'], ['Chacun des vendeurs', 'a', 'ont'], ['Le nombre de commandes', 'augmente', 'augmentent'], ['Nos rideaux', 'protègent', 'protège'], ['Toute l\'équipe', 'participe', 'participent']];
+  const SUJV = [['Le directeur et son adjoint', 'animent', 'anime'], ['Les clients', 'sont', 'est'], ['Chacun des vendeurs', 'a', 'ont'], ['Le nombre de commandes', 'augmente', 'augmentent'], ['Nos produits', 'protègent', 'protège'], ['Toute l\'équipe', 'participe', 'participent']];
   G['fr-accord-verbe'] = () => { const [s, good, bad] = R(SUJV); return mc('fr-accord-verbe', 2, `${s} ___ ${R(['à la réunion.', 'au projet.', 'cette semaine.', 'depuis lundi.'])}`, [good, bad], good, `Le sujet est « ${s} » → ${good}.`); };
 
   // ================= UCD 31 (calculs et classements) =================
@@ -75,9 +75,9 @@
       return fill('ucd-kpi', 2, `Panier moyen en € : ${ca} € de CA pour ${n} commandes.`, [String(pm), pm + '€', pm + ' €'], `Panier moyen = CA / nombre de commandes = ${ca} / ${n} = ${pm} €.`); }
     const pv = R([100, 200, 250, 400]), pa = pv * R([0.5, 0.6, 0.7, 0.75]); const tm = Math.round(100 * (pv - pa) / pa);
     return fill('ucd-kpi', 3, `Calcule le taux de marge en % : prix de vente ${pv} €, coût d'achat ${pa} €.`, [String(tm), tm + '%', tm + ' %'], `Taux de marge = (PV − PA) / PA = (${pv} − ${pa}) / ${pa} = ${tm} %.`); };
-  const SWOT = [['Une équipe commerciale expérimentée', 'Force'], ['Un site web vieillissant', 'Faiblesse'], ['La hausse du prix de l\'énergie (les clients veulent isoler)', 'Opportunité'], ['Un nouveau concurrent à bas prix', 'Menace'], ['Un savoir-faire de fabrication reconnu', 'Force'], ['Un délai de livraison trop long', 'Faiblesse'], ['De nouvelles normes d\'hygiène dans l\'agroalimentaire', 'Opportunité'], ['La hausse du prix du PVC', 'Menace'], ['Un portefeuille clients fidèle', 'Force'], ['Peu de présence sur les réseaux sociaux', 'Faiblesse'], ['Le développement des entrepôts logistiques', 'Opportunité'], ['Une crise économique qui gèle les investissements', 'Menace']];
+  const SWOT = [['Une équipe commerciale expérimentée', 'Force'], ['Un site web vieillissant', 'Faiblesse'], ['La hausse du prix de l\'énergie (les clients veulent isoler)', 'Opportunité'], ['Un nouveau concurrent à bas prix', 'Menace'], ['Un savoir-faire de fabrication reconnu', 'Force'], ['Un délai de livraison trop long', 'Faiblesse'], ['De nouvelles normes d\'hygiène dans l\'agroalimentaire', 'Opportunité'], ['La hausse du prix des matières premières', 'Menace'], ['Un portefeuille clients fidèle', 'Force'], ['Peu de présence sur les réseaux sociaux', 'Faiblesse'], ['Le développement des entrepôts logistiques', 'Opportunité'], ['Une crise économique qui gèle les investissements', 'Menace']];
   const PESTEL = [['Une nouvelle loi sur l\'efficacité énergétique des bâtiments', 'Légal'], ['La hausse des taux d\'intérêt', 'Économique'], ['Une élection qui change la politique industrielle', 'Politique'], ['L\'automatisation des entrepôts', 'Technologique'], ['Les objectifs de réduction des émissions de CO₂', 'Écologique'], ['Le vieillissement de la population active', 'Socioculturel'], ['L\'inflation', 'Économique'], ['Le télétravail qui se généralise', 'Socioculturel'], ['Une nouvelle norme européenne sur les plastiques', 'Légal'], ['L\'arrivée de l\'IA dans la relation client', 'Technologique']];
-  G['ucd-analyse'] = () => { if (Math.random() < 0.5) { const [f, c] = R(SWOT); return mc('ucd-analyse', 2, `Pour Laniflex, dans un SWOT : « ${f} » est…`, ['Force', 'Faiblesse', 'Opportunité', 'Menace'], c, c === 'Force' || c === 'Faiblesse' ? 'Facteur INTERNE à l\'entreprise.' : 'Facteur EXTERNE (le marché, l\'environnement).'); }
+  G['ucd-analyse'] = () => { if (Math.random() < 0.5) { const [f, c] = R(SWOT); return mc('ucd-analyse', 2, `Pour une PME industrielle, dans un SWOT : « ${f} » est…`, ['Force', 'Faiblesse', 'Opportunité', 'Menace'], c, c === 'Force' || c === 'Faiblesse' ? 'Facteur INTERNE à l\'entreprise.' : 'Facteur EXTERNE (le marché, l\'environnement).'); }
     const [f, c] = R(PESTEL); return mc('ucd-analyse', 2, `Dans un PESTEL, « ${f} » relève du facteur…`, [c].concat(pickOthers(['Politique', 'Économique', 'Socioculturel', 'Technologique', 'Écologique', 'Légal'], c, 3)), c, `PESTEL : Politique, Économique, Socioculturel, Technologique, Écologique, Légal → ${c}.`); };
   const OBJS = [['Augmenter le CA de 10 % sur le secteur Sud d\'ici juin', true], ['Vendre plus', false], ['Signer 5 nouveaux clients agroalimentaires avant le 31 mars', true], ['Être le meilleur commercial', false], ['Réduire le délai de devis à 48 h d\'ici la fin du trimestre', true], ['Avoir des clients contents', false], ['Atteindre un taux de transformation de 30 % en 2027', true], ['Faire beaucoup de prospection', false]];
   G['ucd-objectifs'] = () => { if (Math.random() < 0.6) { const [o, ok] = R(OBJS); return mc('ucd-objectifs', 1, `« ${o} » est-il un objectif SMART ?`, ['Oui', 'Non'], ok ? 'Oui' : 'Non', ok ? 'Chiffré, précis et daté → SMART.' : 'Pas chiffré ni daté → pas SMART.'); }

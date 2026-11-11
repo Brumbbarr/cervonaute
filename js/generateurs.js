@@ -3,7 +3,8 @@
 (function () {
   const R = (a) => a[Math.floor(Math.random() * a.length)];
   const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-  const mc = (n, d, q, opts, good, x, tr) => { const o = shuffle(opts); return { n, d, t: 'mc', q, o, a: o.indexOf(good), x, tr, gen: true, k: n + '|' + q + '|' + good }; };
+  // ex = { choix: pourquoi } : explication de chaque choix, remise dans l'ordre après mélange
+  const mc = (n, d, q, opts, good, x, tr, ex) => { const o = shuffle(opts); const r = { n, d, t: 'mc', q, o, a: o.indexOf(good), x, tr, gen: true, k: n + '|' + q + '|' + good }; if (ex) r.xo = o.map((v) => ex[v] || ''); return r; };
   const xc = (texte, q) => Object.assign(q, { xc: texte });
   const fill = (n, d, q, ans, x, tr) => ({ n, d, t: 'fill', q, a: ans, x, tr, gen: true, k: n + '|' + q });
 
@@ -28,17 +29,19 @@
   const elide = (s, v) => (s === 'Je' && /^[aeéiouy]/i.test(v) ? "J'" + v : s + ' ' + v);
   const g3 = () => {
     const s = R(SUJ), v = R(VERB), w = R(QUAND), is3 = s.p === '3s', kind = Math.random();
-    if (kind < 0.45) return fill('3e-personne-does', 2, `Conjugue au présent : "${s.en} ___ (${v.b}) ${v.o} ${w[0]}."`, [is3 ? v.s : v.b],
-      is3 ? `${s.en} = il / elle → le verbe prend -s : ${v.s}.` : `${s.en} n'est pas à la 3e personne du singulier → pas de -s : ${v.b}.`, `${elide(s.fr, v.f[s.p])} ${v.fo} ${w[1]}.`);
+    if (kind < 0.45) return xc(is3 ? `Pourquoi pas « ${v.b} » ? ${s.en} = he / she / it : le verbe prend -s au présent simple.` : `Pourquoi pas « ${v.s} » ? Le -s ne s'ajoute qu'avec he / she / it ; « ${s.en} » n'en fait pas partie.`, fill('3e-personne-does', 2, `Conjugue au présent : "${s.en} ___ (${v.b}) ${v.o} ${w[0]}."`, [is3 ? v.s : v.b],
+      is3 ? `${s.en} = il / elle → le verbe prend -s : ${v.s}.` : `${s.en} n'est pas à la 3e personne du singulier → pas de -s : ${v.b}.`, `${elide(s.fr, v.f[s.p])} ${v.fo} ${w[1]}.`));
     if (kind < 0.75) { const sl = s.en === 'I' ? s.en : s.en.toLowerCase();
       const good = (is3 ? 'Does' : 'Do') + ` ${sl} ${v.b} ${v.o}?`;
       const sf = s.fr.charAt(0).toLowerCase() + s.fr.slice(1);
       const esq = (/^[aeéiouy]/i.test(sf) ? "Est-ce qu'" : 'Est-ce que ') + elide(sf, v.f[s.p]).replace(/^je /, 'je ');
-      return mc('3e-personne-does', 2, `Choisis la bonne question : « ${esq} ${v.fo} ? »`, [good, (is3 ? 'Do' : 'Does') + ` ${sl} ${v.b} ${v.o}?`, (is3 ? 'Does' : 'Do') + ` ${sl} ${v.s} ${v.o}?`, `${is3 ? 'Is' : 'Are'} ${sl} ${v.b} ${v.o}?`].filter((x, i, a) => a.indexOf(x) === i), good,
-        `${is3 ? 'Does' : 'Do'} + sujet + verbe SANS -s.`, `${esq} ${v.fo} ?`); }
+      const mauvaisAux = (is3 ? 'Do' : 'Does') + ` ${sl} ${v.b} ${v.o}?`, avecS = (is3 ? 'Does' : 'Do') + ` ${sl} ${v.s} ${v.o}?`, avecBe = `${is3 ? 'Is' : 'Are'} ${sl} ${v.b} ${v.o}?`;
+      const ex = { [good]: `${is3 ? 'does' : 'do'} + sujet + verbe nu.`, [mauvaisAux]: is3 ? `avec ${sl}, l'auxiliaire est does.` : `does seulement avec he / she / it.`, [avecS]: is3 ? 'le -s est déjà porté par does : le verbe reste nu.' : 'pas de -s après do.', [avecBe]: `${is3 ? 'is' : 'are'} + verbe nu ne forme pas de question au présent simple.` };
+      return mc('3e-personne-does', 2, `Choisis la bonne question : « ${esq} ${v.fo} ? »`, [good, mauvaisAux, avecS, avecBe].filter((x, i, a) => a.indexOf(x) === i), good,
+        `${is3 ? 'Does' : 'Do'} + sujet + verbe SANS -s.`, `${esq} ${v.fo} ?`, ex); }
     const neg = (is3 ? "doesn't " : "don't ") + v.b;
-    return fill('3e-personne-does', 3, `Mets à la forme négative : "${s.en} ${is3 ? v.s : v.b} ${v.o} ${w[0]}." → ${s.en} ___ ${v.o} ${w[0]}.`, [neg, neg.replace("n't", ' not')],
-      `${is3 ? "doesn't" : "don't"} + verbe sans -s.`, `${s.fr} ne ${v.f[s.p]} pas ${v.fo} ${w[1]}.`.replace(/ ne ([aeéiouy])/, " n'$1"));
+    return xc(is3 ? `Pourquoi pas « doesn't ${v.s} » ? Le -s passe sur does : le verbe reste nu (${v.b}).` : `Pourquoi pas « doesn't ${v.b} » ? Doesn't seulement avec he / she / it ; avec « ${s.en} », c'est don't.`, fill('3e-personne-does', 3, `Mets à la forme négative : "${s.en} ${is3 ? v.s : v.b} ${v.o} ${w[0]}." → ${s.en} ___ ${v.o} ${w[0]}.`, [neg, neg.replace("n't", ' not')],
+      `${is3 ? "doesn't" : "don't"} + verbe sans -s.`, `${s.fr} ne ${v.f[s.p]} pas ${v.fo} ${w[1]}.`.replace(/ ne ([aeéiouy])/, " n'$1")));
   };
 
   // ---------- Prétérit : verbes irréguliers datés
@@ -52,8 +55,9 @@
   ];
   const QUANDP = [['Yesterday', 'Hier'], ['Last week', 'La semaine dernière'], ['Two days ago', 'Il y a deux jours'], ['Last Monday', 'Lundi dernier'], ['In 2024', 'En 2024'], ['Last month', 'Le mois dernier']];
   const gPret = () => { const [b, p, o, fr] = R(IRR), [w, fw] = R(QUANDP), k = Math.random();
-    if (k < 0.6) return fill('preterit', 2, `Conjugue au prétérit : "${w}, I ___ (${b}) ${o}."`, [p], `Date (${w.toLowerCase()}) → prétérit. ${b} est irrégulier : ${b} → ${p}.`, `${fw}, ${fr}.`);
-    return mc('preterit', 2, `${w}, I ___ ${o}.`, [p, 'have ' + IRR.find((x) => x[0] === b)[1], b, b + 'ed'].filter((x, i, a) => a.indexOf(x) === i), p, `Une date (${w.toLowerCase()}) → prétérit, jamais le present perfect. ${b} → ${p}.`, `${fw}, ${fr}.`); };
+    if (k < 0.6) return xc(`Pourquoi pas « ${b}ed » ou « have ${p} » ? ${b} est irrégulier (${p}), et avec une date (${w.toLowerCase()}) l'anglais exige le prétérit, pas le present perfect.`, fill('preterit', 2, `Conjugue au prétérit : "${w}, I ___ (${b}) ${o}."`, [p], `Date (${w.toLowerCase()}) → prétérit. ${b} est irrégulier : ${b} → ${p}.`, `${fw}, ${fr}.`));
+    const ex = { [p]: `date passée → prétérit ; ${b} → ${p}.`, ['have ' + p]: `present perfect impossible avec « ${w.toLowerCase()} » (moment daté).`, [b]: 'présent : ne va pas avec une date passée.', [b + 'ed']: `${b} est irrégulier : ${p}, pas ${b}ed.` };
+    return mc('preterit', 2, `${w}, I ___ ${o}.`, [p, 'have ' + p, b, b + 'ed'].filter((x, i, a) => a.indexOf(x) === i), p, `Une date (${w.toLowerCase()}) → prétérit, jamais le present perfect. ${b} → ${p}.`, `${fw}, ${fr}.`, ex); };
 
   // ---------- Present perfect : since / for
   const ACT = [['I have worked here', 'Je travaille ici'], ['She has lived in Lyon', 'Elle vit à Lyon'], ['We have known this client', 'Nous connaissons ce client'], ['He has been our supplier', 'Il est notre fournisseur'],
@@ -61,23 +65,29 @@
   const DUR = [['three years', 'trois ans', 'for'], ['two months', 'deux mois', 'for'], ['a long time', 'longtemps', 'for'], ['ten days', 'dix jours', 'for'], ['six weeks', 'six semaines', 'for'],
     ['2021', '2021', 'since'], ['September', 'septembre', 'since'], ['last Monday', 'lundi dernier', 'since'], ['the beginning of the year', 'le début de l\'année', 'since'], ['January', 'janvier', 'since']];
   const gPP = () => { const [a, fa] = R(ACT), [d, fd, good] = R(DUR);
-    return mc('present-perfect', 2, `${a} ___ ${d}.`, ['since', 'for', 'ago', 'during'], good, good === 'for' ? `« ${d} » est une durée → for.` : `« ${d} » est un point de départ → since.`, `${fa} depuis ${fd}.`); };
+    const ex = good === 'for'
+      ? { for: `« ${d} » est une durée → for.`, since: 'since se met devant un point de départ (2021, lundi), pas une durée.', ago: 'ago va avec le prétérit (« il y a »), pas le present perfect.', during: 'during = pendant une période précise ; « depuis » se dit for.' }
+      : { since: `« ${d} » est un point de départ → since.`, for: 'for se met devant une durée (three years), pas un point de départ.', ago: 'ago va avec le prétérit (« il y a »), pas le present perfect.', during: 'during = pendant ; « depuis » + point de départ se dit since.' };
+    return mc('present-perfect', 2, `${a} ___ ${d}.`, ['since', 'for', 'ago', 'during'], good, good === 'for' ? `« ${d} » est une durée → for.` : `« ${d} » est un point de départ → since.`, `${fa} depuis ${fd}.`, ex); };
 
   // ---------- Articles a / an
   const NOMS = [['engineer', 'an', 'un ingénieur'], ['hour', 'an', 'une heure'], ['university', 'a', 'une université'], ['honest offer', 'an', 'une offre honnête'], ['European client', 'a', 'un client européen'],
     ['order', 'an', 'une commande'], ['quote', 'a', 'un devis'], ['invoice', 'an', 'une facture'], ['useful tool', 'a', 'un outil utile'], ['email', 'an', 'un mail'], ['one-year contract', 'a', "un contrat d'un an"],
     ['urgent request', 'an', 'une demande urgente'], ['warehouse', 'a', 'un entrepôt'], ['easy question', 'an', 'une question facile'], ['MBA', 'an', 'un MBA'], ['user guide', 'a', 'un guide utilisateur']];
   const gArt = () => { const [w, good, fr] = R(NOMS);
+    const ex = good === 'an'
+      ? { an: `« ${w} » commence par un son voyelle → an.`, a: 'a se met devant un son consonne ; ici on entend une voyelle.', the: 'the désignerait une chose précise déjà connue ; ici c\'est « un / une ».', 'Ø': 'un nom singulier dénombrable a besoin d\'un article.' }
+      : { a: `« ${w} » commence par un son consonne → a.`, an: 'an se met devant un son voyelle ; on regarde le son, pas la lettre.', the: 'the désignerait une chose précise déjà connue ; ici c\'est « un / une ».', 'Ø': 'un nom singulier dénombrable a besoin d\'un article.' };
     return mc('articles', /hour|honest|university|European|one-year|MBA|useful/.test(w) ? 3 : 1, `We need ___ ${w}.`, ['a', 'an', 'the', 'Ø'], good,
-      good === 'an' ? `« ${w} » commence par un SON voyelle → an.` : `« ${w} » commence par un SON consonne → a.`, `Nous avons besoin d'${fr.replace(/^un(e)? /, (m) => m)}.`.replace("d'un", "d'un").replace("d'une", "d'une")); };
+      good === 'an' ? `« ${w} » commence par un SON voyelle → an.` : `« ${w} » commence par un SON consonne → a.`, `Nous avons besoin d'${fr.replace(/^un(e)? /, (m) => m)}.`.replace("d'un", "d'un").replace("d'une", "d'une"), ex); };
 
   // ---------- Some / any / no
   const QTE = [['questions', 'des questions', 'aucune question', 'de questions'], ['samples', 'des échantillons', 'aucun échantillon', "d'échantillons"], ['complaints', 'des réclamations', 'aucune réclamation', 'de réclamations'], ['stock', 'du stock', 'aucun stock', 'de stock'], ['meeting rooms', 'des salles de réunion', 'aucune salle de réunion', 'de salles de réunion'], ['orders', 'des commandes', 'aucune commande', 'de commandes'], ['feedback', 'des retours', 'aucun retour', 'de retours']];
   const gSAN = () => { const [w, fdes, faucun, fde] = R(QTE), k = R(['neg', 'q', 'aff', 'no']);
-    if (k === 'neg') return mc('some-any-no', 1, `We don't have ___ ${w}.`, ['some', 'any', 'no'], 'any', 'Verbe négatif (don\'t) → any.', `Nous n'avons pas ${fde}.`);
-    if (k === 'q') return mc('some-any-no', 2, `Do you have ___ ${w}? (tu ne connais pas la réponse)`, ['some', 'any', 'no'], 'any', 'Vraie question → any.', `Avez-vous ${fdes} ?`);
-    if (k === 'aff') return mc('some-any-no', 1, `We received ___ ${w} this morning.`, ['some', 'any', 'no'], 'some', 'Phrase affirmative, quantité positive → some.', `Nous avons reçu ${fdes} ce matin.`);
-    return mc('some-any-no', 2, `There are ___ ${w} today: it's very quiet.`, ['some', 'any', 'no'], 'no', 'Verbe affirmatif (are) + sens négatif → no.', `Il n'y a ${faucun} aujourd'hui : c'est très calme.`); };
+    if (k === 'neg') return mc('some-any-no', 1, `We don't have ___ ${w}.`, ['some', 'any', 'no'], 'any', 'Verbe négatif (don\'t) → any.', `Nous n'avons pas ${fde}.`, { any: 'verbe négatif (don\'t) → any.', some: 'some va dans une phrase affirmative, pas après don\'t.', no: 'don\'t + no = double négation, interdite.' });
+    if (k === 'q') return mc('some-any-no', 2, `Do you have ___ ${w}? (tu ne connais pas la réponse)`, ['some', 'any', 'no'], 'any', 'Vraie question → any.', `Avez-vous ${fdes} ?`, { any: 'vraie question, réponse inconnue → any.', some: 'some dans une question = on s\'attend à un oui (offre, demande).', no: 'no n\'a pas de sens dans cette question.' });
+    if (k === 'aff') return mc('some-any-no', 1, `We received ___ ${w} this morning.`, ['some', 'any', 'no'], 'some', 'Phrase affirmative, quantité positive → some.', `Nous avons reçu ${fdes} ce matin.`, { some: 'affirmatif, quantité positive → some.', any: 'any va dans les négations et les questions.', no: 'no voudrait dire « aucun », contraire de ce qui est dit.' });
+    return mc('some-any-no', 2, `There are ___ ${w} today: it's very quiet.`, ['some', 'any', 'no'], 'no', 'Verbe affirmatif (are) + sens négatif → no.', `Il n'y a ${faucun} aujourd'hui : c'est très calme.`, { no: 'verbe affirmatif + sens négatif → no.', any: 'are est affirmatif : any n\'y nie pas (il faudrait aren\'t any).', some: 'some contredit « c\'est très calme ».' }); };
 
   // ---------- Présent simple ou continu
   const ACTS = [['work', 'working', 'travaille', 'on the project', 'sur le projet'], ['call', 'calling', 'appelle', 'the client', 'le client'], ['prepare', 'preparing', 'prépare', 'a quote', 'un devis'], ['visit', 'visiting', 'visite', 'the warehouse', "l'entrepôt"], ['check', 'checking', 'vérifie', 'the stock', 'le stock'], ['write', 'writing', 'rédige', 'the sales report', 'le rapport des ventes'], ['meet', 'meeting', 'rencontre', 'the suppliers', 'les fournisseurs']];
@@ -94,10 +104,10 @@
   const gFut = () => { const k = R(['spont', 'plan', 'rdv', 'sign']);
     const [o, fo] = R([['the supplier', 'le fournisseur'], ['the director', 'le directeur'], ['a new client', 'un nouveau client'], ['the team', "l'équipe"]]);
     const [t, ft] = R([['tomorrow at 10', 'demain à 10 h'], ['on Friday at 3 pm', 'vendredi à 15 h'], ['next Tuesday at 9', 'mardi prochain à 9 h']]);
-    if (k === 'rdv') return mc('futur', 2, `I ___ ${o} ${t}. It's in my calendar.`, ['am meeting', 'will meet', 'meet', 'met'], 'am meeting', 'Rendez-vous prévu dans l\'agenda → présent continu.', `Je vois ${fo} ${ft}. C'est dans mon agenda.`);
-    if (k === 'spont') return mc('futur', 1, `— The phone is ringing. — OK, I ___ answer it.`, ['will', 'am going to', 'am', 'did'], 'will', 'Décision prise sur le moment → will.', '— Le téléphone sonne. — OK, je réponds.');
-    if (k === 'plan') return mc('futur', 2, `I've already decided: I ___ call ${o} ${t}.`, ['am going to', 'will', 'shall', 'called'], 'am going to', 'Décision déjà prise → be going to.', `C'est déjà décidé : je vais appeler ${fo} ${ft}.`);
-    return mc('futur', 2, `Look at those dark clouds! It ___ rain.`, ['is going to', 'will', 'rains', 'is raining'], 'is going to', 'On voit les signes → be going to.', 'Regarde ces nuages noirs ! Il va pleuvoir.'); };
+    if (k === 'rdv') return mc('futur', 2, `I ___ ${o} ${t}. It's in my calendar.`, ['am meeting', 'will meet', 'meet', 'met'], 'am meeting', 'Rendez-vous prévu dans l\'agenda → présent continu.', `Je vois ${fo} ${ft}. C'est dans mon agenda.`, { 'am meeting': 'rendez-vous déjà fixé → présent continu.', 'will meet': 'possible, mais pour un rendez-vous organisé on préfère le présent continu.', meet: 'le présent simple pour le futur est réservé aux horaires officiels.', met: 'passé : le rendez-vous est à venir.' });
+    if (k === 'spont') return mc('futur', 1, `— The phone is ringing. — OK, I ___ answer it.`, ['will', 'am going to', 'am', 'did'], 'will', 'Décision prise sur le moment → will.', '— Le téléphone sonne. — OK, je réponds.', { will: 'décision prise sur le moment → will.', 'am going to': 'going to = décision prise avant que ça sonne.', am: 'am + answer n\'existe pas.', did: 'passé : l\'action est à venir.' });
+    if (k === 'plan') return mc('futur', 2, `I've already decided: I ___ call ${o} ${t}.`, ['am going to', 'will', 'shall', 'called'], 'am going to', 'Décision déjà prise → be going to.', `C'est déjà décidé : je vais appeler ${fo} ${ft}.`, { 'am going to': 'décision déjà prise → going to.', will: 'will annonce une décision prise à l\'instant ; ici elle est déjà prise.', shall: 'shall sert aux offres et suggestions (Shall I… ?).', called: 'passé : l\'appel est à venir.' });
+    return mc('futur', 2, `Look at those dark clouds! It ___ rain.`, ['is going to', 'will', 'rains', 'is raining'], 'is going to', 'On voit les signes → be going to.', 'Regarde ces nuages noirs ! Il va pleuvoir.', { 'is going to': 'on voit les signes (nuages) → going to.', will: 'will = opinion ou prédiction sans indice visible.', rains: 'présent simple : une habitude, pas une prédiction.', 'is raining': 'il pleut déjà, ce que la phrase ne dit pas.' }); };
 
   window.GEN = { '3e-personne-does': g3, 'preterit': gPret, 'present-perfect': gPP, 'articles': gArt, 'some-any-no': gSAN, 'present-simple-continu': gPSC, 'futur': gFut };
 })();

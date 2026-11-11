@@ -546,7 +546,7 @@ html,body{margin:0;background:var(--bg);color:var(--petrol);font-family:var(--fo
     const g = g1(); el.replaceChildren(); const cur = g && g.classees ? window.rkRang(g.mmr).i : -1;
     T().forEach((t, i) => {
       const s = document.createElement('div'); s.className = 'tk-step' + (i === cur ? ' on' : '');
-      const em = document.createElement('div'); em.innerHTML = embleme(i === 0 ? 900 : t.min + 1, true);
+      const em = document.createElement('div'); em.innerHTML = embleme(t.min + 1, true);
       const n = document.createElement('b'); n.textContent = t.nom; n.style.color = t.c1;
       const p = document.createElement('span'); p.textContent = i === 0 ? '0 – 149' : (T()[i + 1] ? t.min + ' – ' + (T()[i + 1].min - 1) : t.min + '+');
       s.append(em, n, p); el.append(s);

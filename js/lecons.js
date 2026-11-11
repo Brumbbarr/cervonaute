@@ -55,9 +55,9 @@ window.LECONS = {
   e: [['They cut your heating costs and keep out draughts.', 'Ils réduisent vos frais de chauffage et coupent les courants d\'air.']],
   p: ['dust et noise sont indénombrables : pas de -s.', 'let + objet + verbe nu : let forklifts pass (pas « to pass »).'] },
 'lx-client': { i: 'Les mots du devis et de la relation client, avec quelques faux amis importants.',
-  r: ['devis → quote / quotation (≠ devise = appareil)', 'délai de livraison → lead time (≠ delay = retard)', 'sur mesure → made to measure / custom-made', 'bon de commande → purchase order (PO)', 'dimensions de l\'ouverture → width and height of the opening', 'le prix comprend… → the price includes…', 'Traiter une objection : reformuler, puis valoriser (durabilité, économies)'],
+  r: ['devis → quote / quotation (≠ device = appareil)', 'délai de livraison → lead time (≠ delay = retard)', 'sur mesure → made to measure / custom-made', 'bon de commande → purchase order (PO)', 'dimensions de l\'ouverture → width and height of the opening', 'le prix comprend… → the price includes…', 'Traiter une objection : reformuler, puis valoriser (durabilité, économies)'],
   e: [['I\'ll send you the quote today.', 'Je vous envoie le devis aujourd\'hui.'], ['The lead time is two weeks.', 'Le délai de livraison est de deux semaines.']],
-  p: ['delay = retard, pas délai.', 'devise = appareil, pas devis.'] },
+  p: ['delay = retard, pas délai.', 'device = appareil, pas devis.'] },
 // ===================== FRANÇAIS
 'fr-a-a': { i: '« a » est le verbe avoir ; « à » est une préposition.', r: ['Remplace par « avait » : si ça marche → a', 'Sinon → à (à Lyon, à 14 h, un produit à fort potentiel)'], e: [['Il a envoyé le devis.', 'Il avait envoyé → a'], ['Je pars à Lyon.', '« avait Lyon » ne marche pas → à']], p: ['« des questions à poser » : à, car on ne peut pas dire « avait poser ».'] },
 'fr-et-est': { i: '« est » est le verbe être, « et » relie deux mots. « où » indique un lieu ou un moment, « ou » un choix.', r: ['Remplace par « était » : si ça marche → est', 'Remplace par « et puis » : si ça marche → et', 'Remplace par « ou bien » : si ça marche → ou', 'Sinon, lieu ou moment → où'], e: [['Le rapport est prêt.', 'était prêt → est'], ['Le jour où il est venu.', 'moment → où']], p: ['« où » prend toujours un accent quand il indique le lieu ou le temps.'] },

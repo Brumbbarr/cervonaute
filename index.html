@@ -353,7 +353,11 @@ async function ouvrirCoffre(type,ref,titre){S.m={kind:'quete',titre};S.answers=[
 function launchBoss(b){const bm=q=>MODS[b.mod||'en'].test(q.n);let pool=BANQUE.filter(q=>bm(q)&&(!b.notions||b.notions.includes(q.n))&&q.d>=(b.dmin||2));if(pool.length<b.n)pool=BANQUE.filter(q=>bm(q)&&(!b.notions||b.notions.includes(q.n)));
  begin({kind:'boss',boss:b,titre:'Boss : '+b.nom,qs:pick(avecGen(pool,4),Math.min(b.n,pool.length+8)),lives:b.lives})}
 function startNotion(id){MOD=modOf(id);begin({kind:'mode',titre:'Entraînement : '+NOTIONS_NOMS[id],qs:pick(avecGen(BANQUE.filter(q=>q.n===id),15),10)})}
-function begin(m){Object.assign(S,{screen:'match',m,idx:0,answers:[],combo:0,best:0,lives:m.lives||0,answered:false,before:elo(allAnswers())});render()}
+// Mélange l'ordre des choix d'un QCM (copie : la banque n'est pas modifiée, la bonne réponse suit)
+function melangerChoix(q){if(q.t!=='mc'||!Array.isArray(q.o)||q.o.some(o=>/^(les deux|aucune|toutes|both|none|all of)/i.test(o)))return q;
+ const idx=q.o.map((_,i)=>i);for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}
+ return {...q,o:idx.map(i=>q.o[i]),a:idx.indexOf(q.a)}}
+function begin(m){m.qs=m.qs.map(melangerChoix);Object.assign(S,{screen:'match',m,idx:0,answers:[],combo:0,best:0,lives:m.lives||0,answered:false,before:elo(allAnswers())});render()}
 
 // ---- answering
 let timerId=null;

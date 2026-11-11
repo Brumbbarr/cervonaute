@@ -151,3 +151,14 @@ body.v8 [hidden]{display:none!important}
 .v8-pill.copper,.h-rank .surnom,body.v8 .tagn{color:var(--copper-dark)}
 .h-arena .num{background:var(--surface)}
 .v8-btn.copper{background:var(--copper-text);color:var(--surface)}
+
+/* Explications par choix après une réponse */
+body.v8 .xo{list-style:none;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed var(--line);display:grid;gap:7px}
+body.v8 .xo li{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--petrol-mid-2)}
+body.v8 .xo li b{display:inline;margin:0;color:var(--petrol);font-weight:600}
+body.v8 .xo .xo-m{flex:none;margin-top:2px;display:flex}
+body.v8 .xo li.xo-ok .xo-m{color:var(--cyan-text)}
+body.v8 .xo li.xo-ko .xo-m{color:var(--copper-text)}
+body.v8 .xo li.moi{font-weight:500}
+body.v8 .xo em{font-style:normal;font-family:var(--font-mono);font-size:11px;color:var(--petrol-text-2)}
+body.v8 .xc{display:flex;gap:6px;align-items:flex-start;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--petrol-mid-2)}

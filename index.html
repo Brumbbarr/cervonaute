@@ -303,7 +303,7 @@ const strip=s=>norm(s).replace(/[.!?]+$/,'');
 
 // ---- Elo, same rules as the dashboard
 function elo(answers){const st={};const sorted=answers.map((r,k)=>({...r,k})).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.k-b.k);
- sorted.forEach(r=>{const s=st[r.notion]=st[r.notion]||{R:100,n:0,g:{}};const E=1/(1+Math.pow(10,(100-s.R)/600));let g=30*((r.correct?1:0)-E);const d=s.g[r.date]||0;if(g>0&&d>=60)g/=4;s.g[r.date]=d+g;s.R=Math.max(0,s.R+g);s.n++});return st}
+ sorted.forEach(r=>{const s=st[r.notion]=st[r.notion]||{R:100,n:0,g:{}};const E=1/(1+Math.pow(10,(100-s.R)/600));let g=30*((r.correct?1:0)-E);{const w=+r.poids||1;g=g>0?g*w:g/w}const d=s.g[r.date]||0;if(g>0&&d>=60)g/=4;s.g[r.date]=d+g;s.R=Math.max(0,s.R+g);s.n++});return st}
 function globalMmr(st){const cl=Object.values(st).filter(x=>x.n>=3);return cl.length?Math.round(cl.reduce((a,x)=>a+Math.round(x.R),0)/cl.length):100}
 
 // ---- state
@@ -357,16 +357,21 @@ function startNotion(id){MOD=modOf(id);begin({kind:'mode',titre:'Entraînement :
 // Mélange l'ordre des choix d'un QCM (copie : la banque n'est pas modifiée, la bonne réponse suit)
 function melangerChoix(q){if(q.t!=='mc'||!Array.isArray(q.o)||q.o.some(o=>/^(les deux|aucune|toutes|both|none|all of)/i.test(o)))return q;
  const idx=q.o.map((_,i)=>i);for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}
- return {...q,o:idx.map(i=>q.o[i]),a:idx.indexOf(q.a)}}
+ return {...q,o:idx.map(i=>q.o[i]),a:idx.indexOf(q.a),...(Array.isArray(q.xo)?{xo:idx.map(i=>q.xo[i])}:{})}}
 function begin(m){m.qs=m.qs.map(melangerChoix);Object.assign(S,{screen:'match',m,idx:0,answers:[],combo:0,best:0,lives:m.lives||0,answered:false,before:elo(allAnswers())});render()}
 
 // ---- answering
 let timerId=null;
+// Poids selon le type : QCM un peu moins, traduction à écrire nettement plus (et un échec y coûte moins)
+// Explication de chaque choix (q.xo) ou contraste avec la forme fausse (q.xc)
+function explications(q){if(q.t==='mc'&&Array.isArray(q.xo))return `<ul class="xo">${q.o.map((o,i)=>`<li class="${i===q.a?'xo-ok':'xo-ko'}${i===S.last.given?' moi':''}"><span class="xo-m">${V8.ic(i===q.a?V8.P.check:V8.P.croix,14,2.4)}</span><span><b>${esc(o)}</b>${q.xo[i]?` : ${esc(q.xo[i])}`:''}${i===S.last.given?' <em>(ton choix)</em>':''}</span></li>`).join('')}</ul>`;
+ if(q.xc)return `<div class="xc">${V8.i('alerte',13)}<span>${esc(q.xc)}</span></div>`;return ''}
+function poidsQ(q){if(q.t==='mc')return 0.9;if(/^\s*Traduis/i.test(q.q))return 1.3;return 1}
 function answer(given){if(S.answered)return;const q=S.m.qs[S.idx];let ok;
  if(q.t==='mc')ok=given===q.a;else ok=q.a.some(a=>strip(a)===strip(given));
  S.answered=true;S.last={ok,given};clearInterval(timerId);
- const cur=elo(allAnswers().concat(S.answers));const s=cur[q.n]||{R:100,g:{}};const E=1/(1+Math.pow(10,(100-s.R)/600));let g=30*((ok?1:0)-E);const d=(s.g||{})[today()]||0;if(g>0&&d>=60)g/=4;g=Math.max(-s.R,g);S.last.delta=Math.round(g);
- S.answers.push({date:today(),seance:S.m.titre,question:qkey(q).slice(0,240),notion:q.n,correct:ok,given:q.t==='mc'?q.o[given]||'(temps écoulé)':given,attendu:q.t==='mc'?q.o[q.a]:q.a[0]});
+ const cur=elo(allAnswers().concat(S.answers));const s=cur[q.n]||{R:100,g:{}};const E=1/(1+Math.pow(10,(100-s.R)/600));let g=30*((ok?1:0)-E);const w=poidsQ(q);g=g>0?g*w:g/w;const d=(s.g||{})[today()]||0;if(g>0&&d>=60)g/=4;g=Math.max(-s.R,g);S.last.delta=Math.round(g);
+ S.answers.push({date:today(),seance:S.m.titre,question:qkey(q).slice(0,240),notion:q.n,correct:ok,given:q.t==='mc'?q.o[given]||'(temps écoulé)':given,attendu:q.t==='mc'?q.o[q.a]:q.a[0],poids:poidsQ(q)});
  if(ok){S.combo++;S.best=Math.max(S.best,S.combo)}else{S.combo=0;if(S.m.kind==='boss')S.lives--}
  render();floatText((S.last.delta>=0?'+':'')+S.last.delta+' pts',ok);if(ok){S.combo>=3&&S.combo%3===0?SFX.combo():SFX.good()}else SFX.bad()}
 function next(){S.idx++;S.answered=false;const boss=S.m.kind==='boss';if(S.idx>=S.m.qs.length||(boss&&S.lives<=0))return finish();render()}
@@ -560,7 +565,7 @@ function match(){const m=S.m,q=m.qs[S.idx],boss=m.kind==='boss';
  let body=`<div class="meta"><span>Question ${S.idx+1}/${m.qs.length}</span><span>${esc(NOTIONS_NOMS[q.n])} · ${'★'.repeat(q.d)}</span></div><div class="q pop">${esc(q.q)}</div>`;
  if(q.t==='mc')body+=`<div class="opts">${q.o.map((o,i)=>{let c='';if(S.answered){if(i===q.a)c=' good';else if(i===S.last.given)c=' bad'}return `<button class="opt${c}" data-opt="${i}" ${S.answered?'disabled':''}><kbd>${i+1}</kbd>${esc(o)}</button>`}).join('')}</div>`;
  else body+=`<form class="fill" id="fillf"><input id="fillin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Écris ta réponse" ${S.answered?'disabled':''} value="${S.answered?esc(S.last.given):''}" aria-label="Ta réponse"><button class="go" ${S.answered?'hidden':''}>Valider</button></form>`;
- if(S.answered){const ok=S.last.ok;body+=`<div class="fb ${ok?'good':'bad'} ${ok?'pop':'shake'}"><b>${ok?'Bien joué !':'Raté'} <span class="pts ${S.last.delta>=0?'up':'down'}">${S.last.delta>=0?'+':''}${S.last.delta} pts</span></b>${!ok?`Réponse : <b style="display:inline">${esc(q.t==='mc'?q.o[q.a]:q.a[0])}</b><br>`:''}${esc(q.x)}${q.tr?`<div class="tr">${V8.i('traduction',13)}<span>${esc(q.tr)}</span></div>`:''}</div><button class="go" data-act="next">${S.idx+1>=m.qs.length||(boss&&S.lives<=0)?'Voir le résultat':'Suivant'}</button>`}
+ if(S.answered){const ok=S.last.ok;body+=`<div class="fb ${ok?'good':'bad'} ${ok?'pop':'shake'}"><b>${ok?'Bien joué !':'Raté'} <span class="pts ${S.last.delta>=0?'up':'down'}">${S.last.delta>=0?'+':''}${S.last.delta} pts</span></b>${!ok?`Réponse : <b style="display:inline">${esc(q.t==='mc'?q.o[q.a]:q.a[0])}</b><br>`:''}${esc(q.x)}${q.tr?`<div class="tr">${V8.i('traduction',13)}<span>${esc(q.tr)}</span></div>`:''}${explications(q)}</div><button class="go" data-act="next">${S.idx+1>=m.qs.length||(boss&&S.lives<=0)?'Voir le résultat':'Suivant'}</button>`}
  body+=`<p class="keys">Clavier : ${q.t==='mc'?'1 à '+q.o.length+' pour répondre · ':''}Entrée pour valider / passer à la suite · Échap pour abandonner</p>`;
  return head+body}
 

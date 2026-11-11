@@ -4,6 +4,7 @@
   const R = (a) => a[Math.floor(Math.random() * a.length)];
   const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const mc = (n, d, q, opts, good, x, tr) => { const o = shuffle(opts); return { n, d, t: 'mc', q, o, a: o.indexOf(good), x, tr, gen: true, k: n + '|' + q + '|' + good }; };
+  const xc = (texte, q) => Object.assign(q, { xc: texte });
   const fill = (n, d, q, ans, x, tr) => ({ n, d, t: 'fill', q, a: ans, x, tr, gen: true, k: n + '|' + q });
 
   // ---------- -s de la 3e personne / does
@@ -83,11 +84,11 @@
   const gPSC = () => { const [b, ing, fr, o, fo] = R(ACTS), k = Math.random();
     const NOW = [['Right now', 'En ce moment'], ['At the moment', 'En ce moment'], ['Look!', 'Regarde !'], ['This week', 'Cette semaine'], ['Today', "Aujourd'hui"]];
     const HAB = [['usually', "D'habitude"], ['always', 'Toujours,'], ['often', 'Souvent,'], ['every Monday', 'Chaque lundi,'], ['never', '']];
-    if (k < 0.5) { const [w, fw] = R(NOW); return fill('present-simple-continu', 2, `Conjugue : "${w} I ___ (${b}) ${o}."`, ['am ' + ing, "'m " + ing, 'm ' + ing], `${w} = maintenant ou temporaire → présent continu (am + -ing).`, `${fw}, je ${fr} ${fo}.`.replace('!,', ' !')); }
+    if (k < 0.5) { const [w, fw] = R(NOW); return xc(`Pourquoi pas « I ${b} » ? Le présent simple parlerait d'une habitude ; « ${w} » montre ce qui se passe maintenant ou en ce moment.`, fill('present-simple-continu', 2, `Conjugue : "${w} I ___ (${b}) ${o}."`, ['am ' + ing, "'m " + ing, 'm ' + ing], `${w} = maintenant ou temporaire → présent continu (am + -ing).`, `${fw}, je ${fr} ${fo}.`.replace('!,', ' !'))); }
     const [w, fw] = R(HAB);
-    if (w === 'never') return fill('present-simple-continu', 2, `Conjugue : "I never ___ (${b}) ${o} on Sundays."`, [b], 'Never = habitude → présent simple.', `Je ne ${fr} jamais ${fo} le dimanche.`.replace(/ne ([aeéiouy])/, "n'$1"));
+    if (w === 'never') return xc(`Pourquoi pas « am never ${ing} » ? Never décrit une habitude (jamais), pas une action en cours : présent simple.`, fill('present-simple-continu', 2, `Conjugue : "I never ___ (${b}) ${o} on Sundays."`, [b], 'Never = habitude → présent simple.', `Je ne ${fr} jamais ${fo} le dimanche.`.replace(/ne ([aeéiouy])/, "n'$1")));
     const pos = w === 'every Monday' ? `I ___ (${b}) ${o} ${w}.` : `I ${w} ___ (${b}) ${o}.`;
-    return fill('present-simple-continu', 2, `Conjugue : "${pos}"`, [b], `${w} = habitude → présent simple.`, `${fw} je ${fr} ${fo}.`.replace("D'habitude je", "D'habitude, je")); };
+    return xc(`Pourquoi pas « am ${ing} » ? Le présent continu parlerait d'une action en cours ; « ${w} » décrit une habitude.`, fill('present-simple-continu', 2, `Conjugue : "${pos}"`, [b], `${w} = habitude → présent simple.`, `${fw} je ${fr} ${fo}.`.replace("D'habitude je", "D'habitude, je"))); };
 
   // ---------- Futur
   const gFut = () => { const k = R(['spont', 'plan', 'rdv', 'sign']);

@@ -19,7 +19,7 @@
     async load() {
       const all = [];
       for (let from = 0; ; from += 1000) {
-        const { data, error } = await sb.from('reponses').select('id,session_id,date,seance,question,notion,correct,given,attendu,source,created_at').order('date').order('id').range(from, from + 999);
+        const { data, error } = await sb.from('reponses').select('*').order('date').order('id').range(from, from + 999);
         if (error) throw error;
         all.push(...data);
         if (data.length < 1000) break;
@@ -53,8 +53,10 @@
       const { error } = await sb.from('sessions').insert({ id, at: doc.at, date: doc.date, mode: doc.mode, titre: doc.titre, boss: doc.boss, victoire: doc.victoire, combo: doc.combo, carte: doc.carte });
       if (error) throw error;
       if (!doc.reponses.length) return id;
-      const rows = doc.reponses.map((r) => ({ session_id: id, date: r.date, seance: r.seance, question: r.question, notion: r.notion, correct: r.correct, given: r.given, attendu: r.attendu }));
-      const { error: e2 } = await sb.from('reponses').insert(rows);
+      const rows = doc.reponses.map((r) => ({ session_id: id, date: r.date, seance: r.seance, question: r.question, notion: r.notion, correct: r.correct, given: r.given, attendu: r.attendu, poids: r.poids || 1 }));
+      let { error: e2 } = await sb.from('reponses').insert(rows);
+      // Base pas encore à jour (colonne « poids » absente) : on enregistre sans le poids
+      if (e2 && /poids/.test(e2.message || '')) ({ error: e2 } = await sb.from('reponses').insert(rows.map(({ poids, ...r }) => r)));
       if (e2) { await sb.from('sessions').delete().eq('id', id); throw e2; }
       return id;
     },

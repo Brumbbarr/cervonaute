@@ -48,7 +48,7 @@ html,body{margin:0;background:#0a0f1c;color:#e9eef8}
   const u=await Data.user();
   if(!u){msg('Connecte-toi d\'abord dans <a href="index.html">l\'Arène</a>, puis reviens ici.');return}
   try{const [n,d]=await Promise.all([Data.notions(),Data.load()]);
-    shimRun(n,d.reponses.map(r=>({date:String(r.date).slice(0,10),seance:r.seance,question:r.question,notion:r.notion,correct:r.correct})));
+    shimRun(n,d.reponses.map(r=>({date:String(r.date).slice(0,10),seance:r.seance,question:r.question,notion:r.notion,correct:r.correct,poids:r.poids})));
   }catch(e){msg('Impossible de charger tes données : '+(e.message||e))}
 })();
 </script>

@@ -3,8 +3,23 @@
   const R = (a) => a[Math.floor(Math.random() * a.length)];
   const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const uniq = (a) => a.filter((x, i) => a.indexOf(x) === i);
-  const mc = (n, d, q, opts, good, x) => { const o = shuffle(uniq(opts)); return { n, d, t: 'mc', q, o, a: o.indexOf(good), x, gen: true, k: n + '|' + q + '|' + good }; };
-  const fill = (n, d, q, ans, x) => ({ n, d, t: 'fill', q, a: ans, x, gen: true, k: n + '|' + q });
+  // Ce que chaque forme EST : sert à expliquer chaque choix (homophones, terminaisons)
+  const DEF = { a: 'a = verbe avoir (on peut dire « avait »)', 'à': 'à = préposition (« avait » ne marche pas)', et: 'et = liaison (« et puis »)', est: 'est = verbe être (« était »)', ou: 'ou = choix (« ou bien »)', 'où': 'où = lieu ou moment', son: 'son = possessif (« mon »)', sont: 'sont = verbe être (« étaient »)', on: 'on = pronom (« il »)', ont: 'ont = verbe avoir (« avaient »)', ces: 'ces = démonstratif (« ces … -là »)', ses: 'ses = possessif (« les siens »)', "c'est": "c'est = « cela est »", "s'est": "s'est = verbe en « se » (se tromper → s'est trompé)" };
+  const FIN = {
+    'fr-e-er': [[/er$/, 'infinitif (on peut dire « vendre »)'], [/ez$/, 'forme en -ez = vous (vous préparez)'], [/é$/, 'participe passé (on peut dire « vendu »)'], [/ai[st]$/, 'imparfait (je / il …ait) : ne va ni après un auxiliaire ni après une préposition']],
+    'fr-pp-accord': [[/ées$/, 'féminin pluriel'], [/ée$/, 'féminin singulier'], [/és$/, 'masculin pluriel'], [/é$/, 'masculin singulier, ou participe invariable']],
+    'fr-futur-cond': [[/rai[st]?$/, 'conditionnel (avec « nous » : -rions)'], [/rai$/, 'futur (avec « nous » : -rons)']],
+    'fr-accord-verbe': [[/^(ont|sont|vont|font)$/, 'pluriel (ils, elles)'], [/^(a|est|va|fait)$/, 'singulier (il, elle)'], [/ent$/, 'pluriel (ils, elles)'], [/[et]$/, 'singulier (il, elle)']] };
+  FIN['fr-futur-cond'] = [[/rais$|rait$/, 'conditionnel (avec « nous » : -rions)'], [/rai$|ra$/, 'futur (avec « nous » : -rons)']];
+  const decrire = (n, opt) => {
+    if (FIN[n]) { const f = FIN[n].find(([re]) => re.test(String(opt).trim())); return f ? f[1] : ''; }
+    const p = String(opt).split(' / ').map((w) => DEF[w.trim().toLowerCase()]); return p.every(Boolean) ? p.join(' ; ') : ''; };
+  const mc = (n, d, q, opts, good, x) => { const o = shuffle(uniq(opts)); const r = { n, d, t: 'mc', q, o, a: o.indexOf(good), x, gen: true, k: n + '|' + q + '|' + good };
+    if (/^fr-/.test(n) && o.every((v) => decrire(n, v))) r.xo = o.map((v) => (v === good ? 'bonne forme ici : ' : 'ne convient pas ici : ') + decrire(n, v) + '.');
+    return r; };
+  // Questions à écrire : rappel de l'astuce pour éviter la forme voisine
+  const XC = { 'fr-a-a': 'Astuce : si on peut dire « avait », c\'est a ; sinon, à.', 'fr-et-est': 'Astuce : « était » → est ; « et puis » → et ; « ou bien » → ou ; un lieu ou un moment → où.', 'fr-son-sont': 'Astuce : « étaient » → sont ; « mon » → son ; « avaient » → ont ; « il » → on.', 'fr-ces-ses': 'Astuce : « cela est » → c\'est ; verbe en « se » → s\'est ; « les siens » → ses ; « ces … -là » → ces.', 'fr-e-er': 'Astuce : remplace par « vendre » (infinitif, -er) ou « vendu » (participe, -é).', 'fr-pp-accord': 'Astuce : avec être, accord avec le sujet ; avec avoir, accord seulement si le COD est placé avant.', 'fr-accord-verbe': 'Astuce : cherche le vrai sujet (qui fait l\'action ?), puis accorde le verbe avec lui.', 'fr-futur-cond': 'Astuce : passe à « nous » : -rons = futur, -rions = conditionnel.' };
+  const fill = (n, d, q, ans, x) => { const r = { n, d, t: 'fill', q, a: ans, x, gen: true, k: n + '|' + q }; if (XC[n]) r.xc = XC[n]; return r; };
   const pickOthers = (arr, good, n) => shuffle(arr.filter((x) => x !== good)).slice(0, n);
   const G = window.GEN = window.GEN || {};
 

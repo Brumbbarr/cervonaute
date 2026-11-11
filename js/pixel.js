@@ -1,4 +1,4 @@
-// Pixel art de l'Arène : emblèmes de rang, décors, portraits de boss, coffre. Tout est dessiné en code.
+// Pixel art de Cervonaute : emblèmes de rang, décors, portraits de boss, coffre. Tout est dessiné en code.
 (function () {
   // ---------- outil : grille -> SVG (rectangles fusionnés par ligne)
   function grid(w, h) { return Array.from({ length: h }, () => Array(w).fill(null)); }

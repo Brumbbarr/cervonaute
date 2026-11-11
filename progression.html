@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="fr" data-theme="clair"><head>
+<html data-title="Progression · {app}" lang="fr" data-theme="clair"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Progression · Arène Icademie</title>
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0a0f1c"><link rel="icon" href="icon-192.png" sizes="192x192"><link rel="apple-touch-icon" href="app-icon-v5-192.png">
+<title>Progression · Cervonaute</title><script src="js/brand.js"></script>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#143A42"><link rel="icon" href="cervonaute.svg" type="image/svg+xml"><link rel="icon" href="cervonaute-192.png" sizes="192x192"><link rel="apple-touch-icon" href="cervonaute-192.png">
 <style>
 :root{color-scheme:dark;--font-anthropic-sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-anthropic-serif:Georgia,serif;
 --cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.05rem;--cds-font-size-title:1.9rem;--cds-font-weight-medium:600;
@@ -166,7 +166,7 @@ html,body{margin:0;background:var(--bg);color:var(--petrol);font-family:var(--fo
         <a href="#notions">Notions</a>
         <a href="#sessions">Sessions</a>
         <a href="#paliers">Rangs</a>
-        <a href="index.html" class="tk-play">Jouer dans l'Arène</a>
+        <a href="index.html" class="tk-play">Jouer dans <span data-brand="worldName">le Cortex</span></a>
       </nav>
     </div>
   </header>
@@ -561,7 +561,7 @@ html,body{margin:0;background:var(--bg);color:var(--petrol);font-family:var(--fo
   const msg=(h)=>{root.insertAdjacentHTML('afterbegin','<div class="shim-msg">'+h+'</div>')};
   if(!Data.ready){msg('Le site n\'est pas encore relié à la base de données.');return}
   const u=await Data.user();
-  if(!u){msg('Connecte-toi d\'abord dans <a href="index.html">l\'Arène</a>, puis reviens ici.');return}
+  if(!u){msg('Connecte-toi d\'abord dans <a href="index.html">'+BRAND.appName+'</a>, puis reviens ici.');return}
   try{const [n,d]=await Promise.all([Data.notions(),Data.load()]);
     shimRun(n,d.reponses.map(r=>({date:String(r.date).slice(0,10),seance:r.seance,question:r.question,notion:r.notion,correct:r.correct})));
   }catch(e){msg('Impossible de charger tes données : '+(e.message||e))}

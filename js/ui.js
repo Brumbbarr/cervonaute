@@ -1,4 +1,4 @@
-// Habillage de l'Arène : décors d'arène, effets, sons, portraits de boss.
+// Habillage de Cervonaute : décors d'arène, effets, sons, portraits de boss.
 (function () {
   // ---------- Décors SVG des 8 arènes (paysage en bas de bannière)
   const SCENES = [

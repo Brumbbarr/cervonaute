@@ -1,4 +1,4 @@
-// Accès aux données (Supabase) partagé par l'Arène et la page Progression.
+// Accès aux données (Supabase) partagé par Cervonaute et la page Progression.
 (function () {
   const cfg = window.ARENE_CONFIG || {};
   const ok = cfg.supabaseUrl && !cfg.supabaseUrl.startsWith('A_') && window.supabase;

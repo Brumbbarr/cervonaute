@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="fr" data-theme="clair"><head>
-<title>Arène Icademie</title>
+<html lang="fr" data-theme="clair" data-title="{app}"><head>
+<title>Cervonaute</title><script src="js/brand.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/theme.css"><link rel="stylesheet" href="css/v8.css"><link rel="stylesheet" href="css/v8-ecrans.css">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1a1f3d"><link rel="icon" href="icon-192.png" sizes="192x192"><link rel="apple-touch-icon" href="app-icon-v5-192.png">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#143A42"><link rel="icon" href="cervonaute.svg" type="image/svg+xml"><link rel="icon" href="cervonaute-192.png" sizes="192x192"><link rel="apple-touch-icon" href="cervonaute-192.png">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>
 /* Layout: one-column phone app, screens swapped in place: lobby, match, results */
@@ -407,7 +407,7 @@ function carteHtml(id,neuve,complet){const c=CARTES.find(x=>x.id===id);if(!c)ret
  ${complet&&c.anecdote?`<span class="carte-plus">${V8.i('ampoule')}<span>${esc(c.anecdote)}</span></span>`:''}
  ${complet&&c.astuce?`<span class="carte-plus">${V8.i('cerveau')}<span>${esc(c.astuce)}</span></span>`:''}</div>`}
 function areneBanner(g){const a=arene(g),i=ARENES.indexOf(a),nx=ARENES[i+1];const pct=nx?Math.max(3,Math.min(100,100*(g-a.min)/(nx.min-a.min))):100;
- return `<div class="arena"><span class="deco" aria-hidden="true">${V8.ic(V8.P.carte,30)}</span><div><span class="label" style="color:var(--cyan-text)">Arène ${a.n}</span><b>${esc(a.nom)}</b><div class="bar" style="margin-top:6px"><div style="width:${pct}%"></div></div><small>${nx?(Math.ceil(nx.min-g)+' pts avant '+esc(nx.nom)):'Arène maximum atteinte'} · questions ${['faciles','plutôt faciles','équilibrées','plus dures','difficiles','très dures','de haut niveau','d\'expert','de légende'][i]}</small></div></div>`}
+ return `<div class="arena"><span class="deco" aria-hidden="true">${V8.ic(V8.P.carte,30)}</span><div><span class="label" style="color:var(--cyan-text)">Arène ${a.n} · ${esc(BRAND.regionLabel)}</span><b>${esc(a.nom)}</b><div class="bar" style="margin-top:6px"><div style="width:${pct}%"></div></div><small>${nx?(Math.ceil(nx.min-g)+' pts avant '+esc(nx.nom)):'Arène maximum atteinte'} · questions ${['faciles','plutôt faciles','équilibrées','plus dures','difficiles','très dures','de haut niveau','d\'expert','de légende'][i]}</small></div></div>`}
 
 // ---- screens
 // ---- données du jour : objectif, quête, courbe
@@ -454,7 +454,7 @@ function lobby(){const st=elo(allAnswers()),g=globalMmr(st),cl=Object.values(st)
  ${!ready?'<div class="v8-card h-tile-s">Connexion à ta progression…</div>':''}${saveErr?`<div class="v8-card h-tile-s" style="color:var(--copper-text)">${esc(saveErr)}</div>`:''}
  <div class="h-cols"><div class="h-col a">
  <section class="h-arena"><div class="illu">${V8.areneSvg(i,esc(a.nom))}
-  <div class="over"><div class="l"><span class="num">ARÈNE ${two(a.n)} / ${two(ARENES.length)}</span><span class="nom">${esc(a.nom)}</span><span class="diff">Questions ${DIFF[i]}</span></div>
+  <div class="over"><div class="l"><span class="num">ARÈNE ${two(a.n)} / ${two(ARENES.length)} · ${esc(BRAND.regionLabel.toUpperCase())}</span><span class="nom">${esc(a.nom)}</span><span class="diff">Questions ${DIFF[i]}</span></div>
   <button class="v8-icon-btn glass" data-act="profil" aria-label="Voir la route des arènes">${I(P.carte,18,1.8)}</button></div></div>
   <div class="bas"><div class="next"><span>${nx?`Prochaine : <strong>${esc(nx.nom)}</strong>`:'<strong>Arène maximum atteinte</strong>'}</span>${nx?`<span class="v8-pill copper">−${Math.ceil(nx.min-g)} pts</span>`:''}</div>
   <div class="v8-bar" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100" aria-label="Progression vers l'arène suivante"><div style="width:${pct}%"><span class="v8-shine"></span></div></div>
@@ -529,8 +529,8 @@ function collectionScreen(){const col=collection();const f=S.filtre||(S.filtre={
 function tabbar(){const I=V8.ic,P=V8.P,t=[['lobby',P.accueil,'Accueil'],['jouer',P.jouer,'Jouer'],['salle',P.salle,'Salle'],['profil',P.profil,'Profil']];
  return `<nav class="tabbar" aria-label="Navigation">${t.map(([s,i,l])=>`<button data-act="${s}" class="${S.screen===s?'on':''}"${S.screen===s?' aria-current="page"':''}><span>${s}</span>${I(i,20)}${l}</button>`).join('')}<a href="progression.html"><span>p</span>${I(P.progression,20)}Progression</a></nav>`}
 
-function loginScreen(){return `<header class="top"><div class="who"><h1>Arène Icademie</h1><small>Connecte-toi pour retrouver tes rangs</small></div></header>
- <form class="card fill" id="loginf"><span class="label">Connexion par e-mail</span><input id="email" type="email" autocomplete="email" placeholder="ton.email@exemple.com" required aria-label="E-mail"><button class="go">Recevoir mon lien de connexion</button><p class="note" id="loginmsg">Tu reçois un lien par e-mail : clique dessus sur ce téléphone, et tu restes connecté.</p></form>`}
+function loginScreen(){return `<header class="top"><div class="who"><h1>${esc(BRAND.appName)}</h1><small>${esc(BRAND.tagline)}</small></div></header>
+ <form class="card fill" id="loginf"><span class="label">Connexion par e-mail</span><input id="email" type="email" autocomplete="email" placeholder="ton.email@exemple.com" required aria-label="E-mail"><button class="go">Recevoir mon lien de connexion</button><p class="note" id="loginmsg">Tu reçois un lien par e-mail : clique dessus sur ce téléphone, et tu restes connecté.</p></form><p class="note" style="text-align:center">${esc(BRAND.appName)}</p>`}
 
 function profil(){const all=allAnswers(),st=elo(all),g=globalMmr(st),cl=Object.values(st).some(x=>x.n>=3);
  const ok=all.filter(a=>a.correct).length,jours=[...new Set(all.map(a=>a.date))].sort();let serie=jours.length?1:0;for(let i=jours.length-1;i>0;i--){if((new Date(jours[i])-new Date(jours[i-1]))/864e5===1)serie++;else break}
@@ -547,7 +547,7 @@ function profil(){const all=allAnswers(),st=elo(all),g=globalMmr(st),cl=Object.v
  <div class="card"><span class="label">Succès · ${succesOk().length}/${SUCCES.length}</span><div class="list">${SUCCES.map(x=>{const ok=succesOk().includes(x.id);return `<div class="li" style="grid-template-columns:28px 1fr;opacity:${ok?1:.45}"><span style="color:${ok?'var(--copper-text)':'var(--petrol-text-2)'}">${V8.ic(ok?V8.P.trophee:V8.P.cadenas,22)}</span><div>${esc(x.nom)}<small>${esc(x.desc)} · titre « ${esc(x.titre)} »</small></div></div>`}).join('')}</div></div>
  <div class="card"><div class="row2"><span class="label">Collection</span><small>${collection().size}/${CARTES.length} cartes</small></div><button class="go sm" data-act="collection" style="margin-top:8px">${V8.i('livre')} Ouvrir ma collection</button></div>
  ${routeHtml(g)}
- <button class="quit" data-act="logout" style="align-self:center">Se déconnecter</button>`}
+ <button class="quit" data-act="logout" style="align-self:center">Se déconnecter</button><p class="note" style="text-align:center">${esc(BRAND.appName)} · ${esc(BRAND.playerName)} en exploration dans ${esc(BRAND.worldName)}</p>`}
 
 function match(){const m=S.m,q=m.qs[S.idx],boss=m.kind==='boss';
  let head=`<div class="hud"><button class="quit" data-act="quit">${V8.i('croix')} Abandon</button><div class="bar"><div style="width:${100*S.idx/m.qs.length}%"></div></div><span class="combo">${S.combo>=2?V8.flamme(14,'')+'×'+S.combo:''}</span></div>`;
@@ -561,7 +561,7 @@ function match(){const m=S.m,q=m.qs[S.idx],boss=m.kind==='boss';
 
 function results(){const m=S.m,boss=m.kind==='boss',ok=S.answers.filter(a=>a.correct).length,tot=S.answers.length;
  if(m.kind==='quete')return `<div class="card res-h"><span class="label" style="color:var(--gold)">Quête du jour accomplie</span><span class="big">Bien joué !</span></div><div class="card" style="text-align:center"><span class="label">Coffre de quête</span>${S.chestOpen?carteHtml(S.carte,S.carteNeuve):`<button class="chest" data-act="chest"><span class="chest-ic">${V8.coffreGrand()}</span><b>Touche pour ouvrir le coffre</b></button>`}</div><p class="save">${esc(S.saving||'')}</p><button class="go" data-act="lobby">Retour à l'accueil</button>`;
- const ov=S.showArena?(()=>{const a=arene(globalMmr(elo(allAnswers().concat(S.answers)))),i=ARENES.indexOf(a);return `<div class="overlay" style="--arena:${a.acc}"><div class="ov-card pop"><div class="hero ov-hero">${V8.areneSvg(i,esc(a.nom))}</div><span class="label" style="color:var(--cyan-text)">Nouvelle arène débloquée</span><h2>${esc(a.nom)}</h2><p class="note">Les questions deviennent plus difficiles. Le décor de l'app change.</p><button class="go" data-act="closeov">Entrer dans l'arène</button></div></div>`})():'';
+ const ov=S.showArena?(()=>{const a=arene(globalMmr(elo(allAnswers().concat(S.answers)))),i=ARENES.indexOf(a);return `<div class="overlay" style="--arena:${a.acc}"><div class="ov-card pop"><div class="hero ov-hero">${V8.areneSvg(i,esc(a.nom))}</div><span class="label" style="color:var(--cyan-text)">Nouvelle région du ${esc(BRAND.worldNameBare)} débloquée</span><h2>${esc(a.nom)}</h2><p class="note">Les questions deviennent plus difficiles. Le décor de l'app change.</p><button class="go" data-act="closeov">Entrer dans l'arène</button></div></div>`})():'';
  const before=S.before,after=elo(allAnswers().concat(S.answers));const gB=globalMmr(before),gA=globalMmr(after);
  const touched=[...new Set(S.answers.map(a=>a.notion))].map(id=>({id,b:(before[id]||{R:100,n:0}),a:after[id]}));
  const title=boss?(S.won?'VICTOIRE':'DÉFAITE'):'Session terminée';const clA=Object.values(after).some(x=>x.n>=3);
@@ -570,7 +570,7 @@ function results(){const m=S.m,boss=m.kind==='boss',ok=S.answers.filter(a=>a.cor
  ${S.answers.some(a=>!a.correct)?`<div class="card"><span class="label">Tes erreurs</span><div class="list">${S.answers.map((a,i)=>a.correct?'':`<div class="li" style="grid-template-columns:1fr"><div>${esc(m.qs[i].q)}<small>Toi : ${esc(a.given||'—')} · Réponse : ${esc(a.attendu)}</small><small>${esc(m.qs[i].x)}</small>${m.qs[i].tr?`<small class="tr">${V8.i('traduction',13)}<span>${esc(m.qs[i].tr)}</span></small>`:''}</div></div>`).join('')}</div></div>`:''}
  ${S.carte?`<div class="card" style="text-align:center"><span class="label">Butin de la session</span>${S.chestOpen?carteHtml(S.carte,S.carteNeuve):`<button class="chest" data-act="chest" aria-label="Ouvrir le coffre"><span class="chest-ic">${V8.coffreGrand()}</span><b>Touche pour ouvrir le coffre</b></button>`}</div>`:(S.sansButin?`<div class="card nobutin"><span class="label">Pas de butin cette fois</span><p class="note">${boss?'Bats le boss pour gagner un coffre.':'Il faut au moins 60 % de bonnes réponses pour gagner un coffre. Tu as fait '+Math.round(100*ok/tot)+' %.'} Refais une session pour retenter ta chance !</p></div>`:(tot&&tot<5?'<p class="note" style="text-align:center">Réponds à 5 questions ou plus pour gagner une carte.</p>':''))}
  ${(S.succesNew||[]).map(id=>{const x=SUCCES.find(s=>s.id===id);return `<div class="card pop"><span class="label" style="color:var(--gold);display:flex;align-items:center;gap:6px">${V8.i('trophee',14)} Succès débloqué</span><b style="display:block">${esc(x.nom)}</b><span class="note">${esc(x.desc)} · nouveau titre : « ${esc(x.titre)} »</span></div>`}).join('')}
- ${(()=>{const a1=arene(gB),a2=arene(gA);return a2.n>a1.n?`<div class="card pop" style="text-align:center"><span class="label" style="color:var(--cyan-text)">Nouvelle arène débloquée</span><div style="color:var(--cyan-text);display:flex;justify-content:center;margin:6px 0">${V8.ic(V8.P.carte,34)}</div><b>${esc(a2.nom)}</b><p class="note">Les questions deviennent plus difficiles.</p></div>`:''})()}
+ ${(()=>{const a1=arene(gB),a2=arene(gA);return a2.n>a1.n?`<div class="card pop" style="text-align:center"><span class="label" style="color:var(--cyan-text)">Nouvelle région du ${esc(BRAND.worldNameBare)} débloquée</span><div style="color:var(--cyan-text);display:flex;justify-content:center;margin:6px 0">${V8.ic(V8.P.carte,34)}</div><b>${esc(a2.nom)}</b><p class="note">Les questions deviennent plus difficiles.</p></div>`:''})()}
  <p class="save">${esc(S.saving||'')}</p><button class="go" data-act="lobby">Retour à l'accueil</button>${ov}`}
 
 function render(){const app=document.getElementById('app');clearInterval(timerId);

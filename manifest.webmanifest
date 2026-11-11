@@ -1,18 +1,33 @@
 {
   "id": "./?app=arene",
-  "name": "Arène Icademie",
-  "short_name": "Arène",
-  "description": "Entraînement d'anglais, de français et des cours Icademie, avec rangs et boss.",
+  "name": "Cervonaute",
+  "short_name": "Cervonaute",
+  "description": "Deviens Cervonaute et explore le Cortex, arène après arène : anglais, français et cours Icademie, avec rangs et boss.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0a0f1c",
-  "theme_color": "#0a0f1c",
+  "background_color": "#143A42",
+  "theme_color": "#143A42",
   "lang": "fr",
   "icons": [
-    { "src": "app-icon-v5-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "app-icon-v5-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "app-icon-v5-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "cervonaute-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "cervonaute-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "cervonaute-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

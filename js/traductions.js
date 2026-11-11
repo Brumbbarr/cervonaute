@@ -43,7 +43,7 @@
     'Est-ce qu\'il habite à Paris ?',
     'Notre directeur va à Londres chaque mois.',
     'La nouvelle appli ne marche pas sur mon téléphone.',
-    'Il étudie le marketing à Icademie.',
+    'Il étudie le marketing à la fac.',
     'Est-ce qu\'elle travaille le vendredi ?',
     'Chaque client a un contrat.',
     'L\'équipe n\'est pas d\'accord avec le plan.',

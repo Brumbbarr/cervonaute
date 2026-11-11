@@ -12,7 +12,7 @@ window.BRAND = {
   regionLabel: 'Région du Cortex',
   tagline: 'Deviens Cervonaute et explore le Cortex, arène après arène.',
   // Compteur de mises à jour publiées : +1 à chaque publication (avec le cache de sw.js)
-  version: 30,
+  version: 31,
   versionDate: '2026-11-11'
 };
 // 26 mises à jour → v2.6 ; 30 → v3.0

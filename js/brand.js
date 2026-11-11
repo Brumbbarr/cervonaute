@@ -15,7 +15,8 @@ window.BRAND = {
   version: 26,
   versionDate: '2026-11-11'
 };
-BRAND.versionLabel = 'v' + BRAND.version + ' · ' + BRAND.versionDate.split('-').reverse().join('/');
+// 26 mises à jour → v2.6 ; 30 → v3.0
+BRAND.versionLabel = 'v' + Math.floor(BRAND.version / 10) + '.' + (BRAND.version % 10) + ' · ' + BRAND.versionDate.split('-').reverse().join('/');
 // Remplit les éléments statiques marqués data-brand="cle" et le titre de l'onglet
 (function () {
   function fill() {

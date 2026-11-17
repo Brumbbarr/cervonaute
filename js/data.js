@@ -1,5 +1,7 @@
 // Accès aux données (Supabase) partagé par Cervonaute et la page Progression.
 (function () {
+  // L’aperçu utilise son propre adaptateur en mémoire, sans initialiser Supabase.
+  if (new URLSearchParams(location.search).get('apercu') === '1') return;
   const cfg = window.ARENE_CONFIG || {};
   const ok = cfg.supabaseUrl && !cfg.supabaseUrl.startsWith('A_') && window.supabase;
   const sb = ok ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, { auth: { persistSession: true, detectSessionInUrl: true } }) : null;

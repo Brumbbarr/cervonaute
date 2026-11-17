@@ -1,0 +1,35 @@
+/* Paysages existants, en grand et fondus dans la page : aucun motif répété. */
+body.v8.cortex-app{isolation:isolate}
+body.v8.cortex-app:has(.app:not(.m-match):not(.m-bossintro):not(.m-login)){background:radial-gradient(ellipse at 95% 3%,var(--cx-theme-mist) 0,transparent 64%),#f3f0e7!important;background-attachment:fixed!important}
+body.v8.cortex-app:before{content:'';position:fixed;inset:0;height:100dvh;z-index:0;pointer-events:none;background-image:var(--cx-theme-scene);background-size:cover;background-position:center;opacity:.3;mask-image:linear-gradient(90deg,#000b,transparent 31%,transparent 71%,#000c);-webkit-mask-image:linear-gradient(90deg,#000b,transparent 31%,transparent 71%,#000c)}
+body.cortex-app>.app{position:relative;z-index:1}
+body:has(.m-match,.m-bossintro,.m-login):before{display:none}
+.m-lobby .cortex-journey{border:1px solid var(--cx-theme-line);box-shadow:0 5px 18px #273f3110}
+.m-lobby .cortex-journey-art:after{display:none}
+.m-lobby .cortex-daily{background:var(--cx-theme-paper);border:1px solid var(--cx-theme-line);box-shadow:0 5px 18px #273f3110}
+.m-lobby .cortex-daily>.cortex-eyebrow,.m-lobby .cortex-goal-display>span,.m-lobby .cortex-daily .cortex-secondary small{color:var(--cx-theme-ink)}
+.m-lobby .cortex-goal-ring{color:var(--cx-theme-ink)}
+.m-lobby .cortex-rank-mini{border-color:var(--cx-theme-line)}
+.m-lobby .cortex-primary,.m-lobby .cortex-primary:hover{background:var(--cx-theme-ink);border-color:var(--cx-theme-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--cx-theme-ink),#102a27 38%)}
+.m-lobby .cortex-meter{background:var(--cx-theme-paper);outline-color:var(--cx-theme-line)}
+.m-lobby .cortex-meter i{background:linear-gradient(90deg,var(--cx-theme-ink),color-mix(in srgb,var(--cx-theme-ink),#f1e0aa 40%))}
+.m-lobby .cortex-mission{background:var(--cx-theme-secondary);border:1px solid var(--cx-theme-line);box-shadow:0 5px 18px #273f3110}
+.m-lobby .cortex-mission .cortex-eyebrow,.m-lobby .cortex-mission-icon{color:var(--cx-theme-ink)}
+.m-lobby .cortex-quest-dots i{border-color:var(--cx-theme-line);background:color-mix(in srgb,var(--cx-theme-paper),white 35%)}
+.m-lobby .cortex-quest-dots i.complete{background:var(--cx-theme-ink);color:#fffaf0}
+.m-lobby .cortex-mission .cortex-secondary{border-color:var(--cx-theme-line);color:var(--cx-theme-ink);box-shadow:0 3px 0 var(--cx-theme-line)}
+.cortex-app .cortex-nav button[aria-current=page]{background:var(--cx-theme-ink);box-shadow:0 3px 0 color-mix(in srgb,var(--cx-theme-ink),#102a27 38%)}
+.m-lobby .cortex-professor{background:#faf0d8;border:1px solid #e4d1a7;box-shadow:0 4px 15px #63491b09}
+.cortex-top{border-bottom-color:var(--line)}
+.cortex-brand-mark,.m-lobby .cortex-brand-mark{background-image:var(--cx-preview-logo,url('../assets/cortex-ui/monogramme-cervonaute.svg'));background-size:86%;background-position:center;background-repeat:no-repeat;color:#a48449;border-color:#b99c62}
+.m-lobby .cortex-explore-sticker{background:#e6bc6c;color:#654c25}
+html[data-logo-essai] .cortex-explore-sticker{background-image:var(--cx-preview-logo);background-repeat:no-repeat;background-position:center;background-size:85%}
+html[data-logo-essai] .cortex-explore-sticker>svg{visibility:hidden}
+.cx-logo-link{display:block;margin-top:10px;font-size:11px;color:#315e5b;font-weight:650}
+@media(min-width:1100px){html[data-ambiance=celeste] .cortex-journey-art{box-shadow:0 0 36px #c4b5e23b}}
+@media(max-width:650px){body.v8.cortex-app:before{opacity:.14;mask-image:linear-gradient(#000b,transparent 46%);-webkit-mask-image:linear-gradient(#000b,transparent 46%);background-size:auto 85vh;background-repeat:no-repeat;background-position:center top}}
+
+/* Logo retenu provisoirement le 17 novembre : ocre, ivoire et bleu nuit. */
+.cortex-brand-mark,.m-lobby .cortex-brand-mark{background-color:#091238;background-size:100%;border:0;box-shadow:none;transform:none;border-radius:12px}
+.m-lobby .cortex-explore-sticker{background:#091238 url(../assets/cortex-ui/logo-cervonaute.svg) center/100% no-repeat;border-color:#f5ecd8}
+.m-lobby .cortex-explore-sticker>svg{visibility:hidden}

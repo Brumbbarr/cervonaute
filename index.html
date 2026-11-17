@@ -276,6 +276,7 @@ button.mini{text-align:left;color:var(--fg);background:var(--panel);cursor:point
 <link rel="stylesheet" href="css/cortex-parcours.css">
 <link rel="stylesheet" href="css/cortex-revelation.css">
 <link rel="stylesheet" href="css/cortex-ambiances.css">
+<link rel="stylesheet" href="css/cortex-creatif.css">
 </head><body>
 <div class="bgfx" aria-hidden="true"><div class="bg-grid"></div><div class="bg-orb o1"></div><div class="bg-orb o2"></div><div class="bg-beams"></div><div class="bg-vig"></div></div>
 <div class="app" id="app"></div>
@@ -323,6 +324,7 @@ button.mini{text-align:left;color:var(--fg);background:var(--panel);cursor:point
 <script src="js/cortex-revelation.js"></script>
 <script src="js/cortex-apercu.js"></script>
 <script src="js/cortex-ambiances.js"></script>
+<script src="js/cortex-creatif.js"></script>
 <script>
 const TIERS=[{nom:'Fer',min:0,c1:'#9aa0ab',c2:'#4b4f57'},{nom:'Bronze',min:150,c1:'#f0a66a',c2:'#7a4420'},{nom:'Argent',min:220,c1:'#e6edf6',c2:'#7d8a9c'},{nom:'Or',min:310,c1:'#ffe27a',c2:'#b8841a'},{nom:'Platine',min:420,c1:'#8ff0e0',c2:'#1f8f84'},{nom:'Diamant',min:540,c1:'#a9c4ff',c2:'#3557d6'},{nom:'Maître',min:670,c1:'#e3a6ff',c2:'#7a2fc0'},{nom:'Légende',min:820,c1:'#ffb3c1',c2:'#d1203f'}];
 function rang(r){let i=TIERS.length-1;while(i>0&&r<TIERS[i].min)i--;if(i===TIERS.length-1)return{i,label:TIERS[i].nom,div:0};const bas=TIERS[i].min,w=(TIERS[i+1].min-bas)/3,div=Math.max(1,Math.min(3,Math.floor((r-bas)/w)+1));return{i,label:TIERS[i].nom+' '+['I','II','III'][div-1],div}}
@@ -506,7 +508,7 @@ function lecon(){const id=S.lecon,L=LECONS[id];if(!L)return salle();const st=elo
  <button class="go" data-notion="${id}">${V8.i('cible',18)} S'entraîner sur cette notion (10 questions)</button>`}
 // ---- Écran Collection : filtres matière / famille / rareté / découvertes
 function collectionScreen(){return labo()}
-function loginScreen(){return `<section class="cortex-login-intro"><img src="assets/cortex-ui/laboratoire.webp" width="1500" height="500" alt="Le laboratoire baigné de lumière du professeur B"><div><span class="cortex-eyebrow">Les portes du Cortex</span><h1>Le savoir ouvre des mondes.</h1><p>Révise à ton rythme, explore le Cortex et retrouve ses mystérieux artefacts aux côtés du professeur B.</p></div></section>
+function loginScreen(){return `<section class="cortex-login-intro"><img src="assets/cortex-ui/creatif/region-1.webp" width="1400" height="788" alt="Le Jardin des éveils, premier horizon du Cortex"><div><span class="cortex-eyebrow">Les portes du Cortex</span><h1>Le savoir ouvre des mondes.</h1><p>Révise à ton rythme, explore le Cortex et retrouve ses mystérieux artefacts aux côtés du professeur B.</p></div></section>
  <form class="card fill" id="loginf"><span class="label">Connexion par e-mail</span><input id="email" type="email" autocomplete="email" placeholder="ton.email@exemple.com" required aria-label="E-mail"><button class="go">Recevoir mon lien de connexion</button><p class="note" id="loginmsg">Tu reçois un lien par e-mail : clique dessus sur ce téléphone, et tu restes connecté.</p></form><p class="note" style="text-align:center">${esc(BRAND.appName)} · ${esc(BRAND.versionLabel)}</p>`}
 
 function profil(){const all=allAnswers(),st=elo(all),g=globalMmr(st),cl=Object.values(st).some(x=>x.n>=3);

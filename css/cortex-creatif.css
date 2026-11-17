@@ -111,3 +111,166 @@ body.v8.cx-creative .go{background:var(--cx-theme-ink,#6050cf);color:#fff;border
 @media(max-width:540px){.cx-creative .cortex-login-intro>img{height:205px}.cx-creative .cortex-login-intro>div{padding:23px}.cx-creative .cortex-login-intro h1{font-size:30px}}
 @media(max-width:750px){.cx-creative .m-lobby .cortex-home-grid{grid-template-columns:1fr}.cx-creative .m-lobby .cortex-journey-art{height:230px}.cx-creative .m-lobby .cortex-daily{display:grid;grid-template-columns:1.15fr 1fr;align-items:center;text-align:left;padding:23px}.cx-creative .m-lobby .cortex-daily>.cortex-eyebrow{grid-column:1}.cx-creative .m-lobby .cortex-daily h2{grid-column:1;font-size:23px}.cx-creative .m-lobby .cortex-goal-display{grid-column:2;grid-row:1/4}.cx-creative .m-lobby .cortex-daily .cortex-goal-ring{width:128px;height:128px}.cx-creative .m-lobby .cortex-daily .cortex-secondary{grid-column:1}.cx-creative .m-lobby .cortex-rank-mini{grid-column:1/-1}}
 @media(max-width:400px){.cx-creative .m-lobby .cortex-daily{padding:19px;gap:12px}.cx-creative .m-lobby .cortex-daily h2{font-size:20px}.cx-creative .m-lobby .cortex-goal-display>span{font-size:9px}.cx-creative .m-lobby .cortex-daily .cortex-goal-ring{width:112px;height:112px}.cx-creative .m-lobby .cortex-journey-copy{padding:21px}.cx-creative .m-lobby .cortex-journey-copy h2{font-size:26px}}
+/* Composition adaptative : un lieu à explorer, plutôt qu'une pile de panneaux. */
+body.v8.cx-creative .app:has(>.cortex-nav){max-width:none!important;width:100%;padding:26px clamp(20px,3vw,72px) 115px!important}
+.cx-creative .cx-home-stage{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:26px 32px;align-items:start}
+.cx-creative .cx-home-stage>.cortex-greeting,.cx-creative .cx-home-stage>.cortex-notice{grid-column:1/-1}
+.cx-creative .cx-home-stage>.cortex-home-grid,.cx-creative .cx-home-stage>.cortex-bottom-grid{display:contents}
+.cx-creative .cx-home-stage .cortex-journey{grid-column:1;grid-row:2/4;position:relative;min-height:650px;border:0;border-radius:12px;box-shadow:none;isolation:isolate;background:#252747}
+.cx-creative .cx-home-stage .cortex-journey-art{position:absolute;inset:0;height:100%;z-index:-2}
+.cx-creative .cx-home-stage .cortex-journey-art:after{display:block;content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 28%,#171d3c70 48%,#171d3cf5 100%);pointer-events:none}
+.cx-creative .cx-home-stage .cortex-journey-copy{position:relative;padding:32px;max-width:660px;margin-top:280px}
+.cx-creative .cx-home-stage .cortex-journey-copy :is(h2,p,.cortex-eyebrow,.cortex-journey-progress,.cortex-journey-progress strong,.cortex-route-peek small){color:#fff}
+.cx-creative .cx-home-stage .cortex-journey-copy h2{font-size:clamp(30px,3.1vw,54px);line-height:1.06;margin:12px 0 15px;max-width:17ch}
+.cx-creative .cx-home-stage .cortex-journey-copy p{font-size:14px;max-width:47ch}
+.cx-creative .cx-home-stage .cortex-journey-copy .cortex-primary{width:auto;min-width:260px;background:#fff;color:#302956;border-color:#fff;box-shadow:none;border-radius:8px}
+.cx-creative .cx-home-stage .cortex-journey-copy .cortex-meter{background:#ffffff30;max-width:510px}
+.cx-creative .cx-home-stage .cortex-explore-sticker{display:none}
+.cx-creative .cx-home-stage .cortex-route-peek{max-width:510px;margin:16px 0}
+.cx-creative .cx-home-stage .cortex-daily{grid-column:2;grid-row:2;display:grid;grid-template-columns:1fr 115px;gap:12px;padding:23px;border-radius:10px;box-shadow:none;text-align:left}
+.cx-creative .cx-home-stage .cortex-daily>.cortex-eyebrow,.cx-creative .cx-home-stage .cortex-daily h2{grid-column:1}
+.cx-creative .cx-home-stage .cortex-daily h2{font-size:23px}
+.cx-creative .cx-home-stage .cortex-goal-display{grid-column:2;grid-row:1/3;margin:0}
+.cx-creative .cx-home-stage .cortex-daily .cortex-goal-ring{width:110px;height:110px}
+.cx-creative .cx-home-stage .cortex-daily .cortex-goal-ring b{font-size:36px}
+.cx-creative .cx-home-stage .cortex-goal-display>span{font-size:9px}
+.cx-creative .cx-home-stage .cortex-daily .cortex-secondary,.cx-creative .cx-home-stage .cortex-rank-mini{grid-column:1/-1}
+.cx-creative .cx-home-stage .cortex-rank-mini{padding-top:12px}
+.cx-creative .cx-home-stage .cortex-mission{grid-column:2;grid-row:3;padding:24px 22px;border-radius:0;border:0;border-top:3px solid #dfbb5d;box-shadow:none;background:#fff0b9}
+.cx-creative .cx-home-stage .cortex-mission h2{font-size:24px;padding-right:27px}
+.cx-creative .cx-home-stage .cortex-mission-icon{width:30px;height:30px;right:18px;top:24px}
+.cx-creative .cx-home-stage .cortex-mission-icon svg{width:22px}
+.cx-creative .cx-home-stage .cortex-quest-progress{margin:20px 0}
+.cx-creative .cx-home-stage .cortex-quest-footer{margin:0;flex-wrap:wrap}
+.cx-creative .cx-home-stage .cortex-quest-dots{gap:6px}
+.cx-creative .cx-home-stage .cortex-quest-dots i{width:24px;height:24px}
+.cx-creative .cx-home-stage .cortex-professor{grid-column:2;grid-row:4;display:flex;flex-wrap:wrap;margin:0;padding:20px 0;background:transparent;border:0;border-top:1px solid #d3c5cb;border-radius:0;box-shadow:none;gap:16px}
+.cx-creative .cx-home-stage .cortex-professor p{font-size:13px}
+.cx-creative .cx-home-stage .cortex-professor>.cortex-text-button{margin-left:72px}
+.cx-creative .cx-home-stage .cortex-lab-invite{grid-column:1;grid-row:4;min-height:250px;display:grid;grid-template-columns:1fr 45%;gap:20px;padding:28px 32px;border:0;border-radius:10px;box-shadow:none;overflow:hidden}
+.cx-creative .cx-home-stage .cortex-lab-invite>div:first-child{max-width:none;position:relative;z-index:1}
+.cx-creative .cx-home-stage .cortex-lab-invite .cx-discovery-scene{position:relative;inset:auto;align-self:stretch;width:100%;height:100%;margin:0;min-height:200px;transform:none}
+.cx-creative .cx-home-stage .cortex-lab-invite .cx-discovery-scene img{width:100%;height:100%;object-fit:cover;border-radius:4px;opacity:.85;mask-image:linear-gradient(90deg,transparent,#000 22%)}
+.cx-creative .cx-expedition-layout,.cx-creative .cx-study-layout{display:grid;gap:30px}
+.cx-creative .cx-expedition-layout>.cx-subject,.cx-creative .cx-study-layout>.cx-subject{justify-self:end;width:min(460px,100%);border:0;border-bottom:1px solid #c9c3dd;border-radius:0;background:transparent;padding:8px 0 14px}
+.cx-creative .cx-mode-grid{align-items:start;gap:22px}
+.cx-creative .cx-mode-card{border-radius:6px;box-shadow:none;border:0;min-height:265px;padding:26px;position:relative}
+.cx-creative .cx-mode-card.tone-1{min-height:310px;border-radius:6px;box-shadow:none}
+.cx-creative .cx-mode-card.tone-2{margin-top:42px;box-shadow:none}
+.cx-creative .cx-mode-card .cx-mode-icon{transform:none;background:transparent;padding:0;justify-content:start;width:auto}
+.cx-creative .cx-boss-section{padding:24px 0;background:transparent;border:0;border-top:1px solid #d0c9e0;border-radius:0}
+.cx-creative .cx-boss-card{border:0;border-bottom:1px solid #d6cee6;border-radius:0;background:transparent;padding:18px 0}
+.cx-creative .cx-boss-card:hover{background:#ffffff80}
+.cx-creative .cortex-paper:has(>.cortex-region-atlas){background:transparent;border:0;border-radius:0;box-shadow:none;padding:12px 0}
+.cx-creative .cortex-region-atlas{grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}
+.cx-creative .cortex-region-place{border:0;border-radius:5px;background:transparent;overflow:visible}
+.cx-creative .cortex-region-place>div{overflow:hidden;border-radius:5px}
+.cx-creative .cortex-region-place section{padding:15px 0}
+.cx-creative .cortex-region-place.current{background:transparent;border:0;box-shadow:none}
+.cx-creative .cortex-region-place.current section{border-bottom:3px solid var(--cx-theme-ink)}
+.cx-creative .cx-study-intro{display:block;position:relative;background:transparent;border:0;box-shadow:none;padding:10px 0 30px;border-bottom:1px solid #c8d9d5;border-radius:0}
+.cx-creative .cx-study-intro>span{width:65px;height:65px;transform:none;background:transparent;margin-bottom:12px;justify-content:start}
+.cx-creative .cx-learning-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 28px}
+.cx-creative .cx-learning-card{border:0;border-bottom:1px solid #cec8de;border-radius:0;box-shadow:none;background:transparent;padding:24px 0;display:grid;grid-template-columns:42px minmax(0,1fr);gap:12px;align-items:start}
+.cx-creative .cx-learning-card:hover{background:#ffffff80;transform:none}
+.cx-creative .cx-learning-icon{transform:none;margin:0;border-radius:9px}
+.cx-creative .cx-learning-copy strong{font-size:18px}
+.cx-creative .cx-learning-footer{grid-column:2;border:0;margin:0;padding:5px 0}
+.cx-creative .cortex-paper:has(>.cortex-insignes){background:transparent;border:0;border-top:1px solid #d6cce3;border-radius:0;box-shadow:none;padding:25px 0}
+.cx-creative .cortex-insignes{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.cx-creative .cortex-insigne,.cx-creative .cortex-insigne.current{border:0;border-radius:0;background:transparent}
+.cx-creative .cortex-insigne.current{border-bottom:2px solid var(--cx-theme-ink)}
+.cx-creative .cortex-family,.cx-creative .cortex-family[aria-pressed=true]{border:0;border-radius:0;background:transparent;border-bottom:1px solid #d3cce2;box-shadow:none}
+.cx-creative .cortex-family[aria-pressed=true]{border-bottom:3px solid var(--cx-theme-ink)}
+.cx-creative .cortex-lab-banner{border-radius:8px;border:0;min-height:285px}
+.cx-creative .cortex-lab-banner>div{min-height:285px}
+@media(min-width:1100px){
+ body.v8.cx-creative .app:has(>.cortex-nav){width:calc(100% - 200px);margin-left:200px;padding:28px clamp(28px,2.7vw,72px) 55px!important}
+ body.v8.cx-creative .cortex-nav{left:22px;top:142px;bottom:auto;transform:none;width:164px;display:flex;flex-direction:column;gap:8px;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;backdrop-filter:none}
+ .cx-creative .cortex-nav:before{content:'DANS LE CORTEX';font:700 9px var(--font-text);letter-spacing:.13em;color:#77718e;padding:0 14px 15px}
+ .cx-creative .cortex-nav button{flex:none;flex-direction:row;justify-content:start;gap:14px;padding:16px 14px;font-size:12px;min-height:54px;border-radius:6px}
+ .cx-creative .cortex-nav button[aria-current=page]{background:color-mix(in srgb,var(--cx-theme-ink),transparent 90%);color:var(--cx-theme-ink);box-shadow:inset 3px 0 var(--cx-theme-ink)}
+ .cx-creative .cortex-nav button svg{width:21px;height:21px}
+ .cx-creative .cx-expedition-layout{grid-template-columns:minmax(0,1fr) 300px;gap:32px}
+ .cx-creative .cx-expedition-layout>.cx-subject{grid-column:1/-1}
+ .cx-creative .cx-expedition-layout>section:has(.cx-mode-grid){grid-column:1;grid-row:2}
+ .cx-creative .cx-expedition-layout>.cx-boss-section{grid-column:2;grid-row:2/5;border-top:0;border-left:1px solid #d0c9e0;padding:0 0 0 26px}
+ .cx-creative .cx-boss-section .cortex-section-heading{display:block}.cx-creative .cx-boss-section .cx-optional{display:inline-block;margin:0 0 15px}
+ .cx-creative .cx-boss-grid{grid-template-columns:1fr;gap:0}
+ .cx-creative .cx-expedition-layout>.cortex-paper{grid-column:1;grid-row:3}
+ .cx-creative .cx-expedition-layout>section:last-child{grid-column:1;grid-row:4}
+ .cx-creative .cx-study-layout{grid-template-columns:250px minmax(0,1fr);column-gap:50px}
+ .cx-creative .cx-study-layout>.cx-subject{grid-column:1/-1}
+ .cx-creative .cx-study-layout>.cx-study-intro{grid-column:1;grid-row:2;align-self:start;position:sticky;top:24px}
+ .cx-creative .cortex-insignes{grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+ .cx-creative .m-lecon .lec{max-width:1000px;width:100%;align-self:start}
+ .cx-creative .cx-study-layout>section:not(.cx-study-intro):not(.cortex-paper){grid-column:2}
+ .cx-creative .cx-study-layout>.cortex-paper{grid-column:1/-1}
+ body.v8.cx-creative .app.m-labo{display:grid;grid-template-columns:240px minmax(0,1fr);align-content:start;gap:28px 40px}
+ .cx-creative .m-labo>.cortex-top,.cx-creative .m-labo>.cortex-page-heading,.cx-creative .m-labo>.cortex-lab-banner,.cx-creative .m-labo>.cx-preview-window,.cx-creative .m-labo>.cortex-preview{grid-column:1/-1}
+ .cx-creative .m-labo>.cortex-family-grid{grid-column:1;display:flex;flex-direction:column;align-self:start;position:sticky;top:24px;gap:6px}
+ .cx-creative .m-labo>.cortex-specimens{grid-column:2;min-width:0}
+ .cx-creative .cortex-lab-album{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:28px}
+}
+@media(min-width:1700px){
+ .cx-creative .cx-home-stage{grid-template-columns:minmax(0,1fr) 360px;column-gap:40px}
+ .cx-creative .cx-home-stage .cortex-journey{min-height:710px}
+ .cx-creative .cx-home-stage .cortex-journey-copy{margin-top:340px;padding:38px}
+ .cx-creative .cx-home-stage .cortex-daily{padding:28px;row-gap:20px}
+ .cx-creative .cx-study-layout{grid-template-columns:300px minmax(0,1fr);column-gap:65px}
+ .cx-creative .cx-learning-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .cx-creative .cortex-region-atlas{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:1100px) and (max-width:1399px){
+ .cx-creative .cx-home-stage{grid-template-columns:minmax(0,1fr) 290px;gap:24px}
+ .cx-creative .cx-home-stage .cortex-daily{grid-template-columns:1fr 95px;padding:18px}
+ .cx-creative .cx-home-stage .cortex-daily .cortex-goal-ring{width:95px;height:95px}
+ .cx-creative .cx-home-stage .cortex-daily h2{font-size:21px}
+ .cx-creative .cx-expedition-layout{grid-template-columns:minmax(0,1fr) 240px;gap:25px}
+ .cx-creative .cx-mode-grid{grid-template-columns:1fr;gap:12px}
+ .cx-creative .cx-mode-card,.cx-creative .cx-mode-card.tone-1,.cx-creative .cx-mode-card.tone-2{min-height:180px;margin-top:0;padding:23px}
+ .cx-creative .cx-mode-icon{margin-bottom:12px}
+ .cx-creative .cx-study-layout{grid-template-columns:210px minmax(0,1fr);gap:28px}
+}
+@media(max-width:1099px){
+ .cx-creative .cx-home-stage{grid-template-columns:minmax(0,1fr) 290px;gap:24px}
+ .cx-creative .cx-home-stage .cortex-daily{grid-template-columns:1fr 95px;padding:18px}
+ .cx-creative .cx-home-stage .cortex-daily h2{font-size:21px}
+ .cx-creative .cx-home-stage .cortex-daily .cortex-goal-ring{width:95px;height:95px}
+ .cx-creative .cortex-nav{border-radius:12px;box-shadow:0 6px 24px #3b32661a}
+ .cx-creative .cortex-nav button{border-radius:7px}
+}
+@media(max-width:750px){
+ body.v8.cx-creative .app:has(>.cortex-nav){padding:20px 18px 110px!important}
+ .cx-creative .cx-home-stage{display:flex;flex-direction:column;gap:26px}
+ .cx-creative .cx-home-stage>*{width:100%;min-width:0}
+ .cx-creative .cx-home-stage .cortex-greeting{margin-bottom:0}
+ .cx-creative .cx-home-stage .cortex-greeting h1{font-size:29px}
+ .cx-creative .cx-home-stage .cortex-journey{width:100%;min-height:565px;border-radius:6px}
+ .cx-creative .cx-home-stage .cortex-journey-copy{margin-top:230px;padding:24px 22px}
+ .cx-creative .cx-home-stage .cortex-journey-copy h2{font-size:36px}
+ .cx-creative .cx-home-stage .cortex-journey-copy .cortex-primary{min-width:0;width:100%}
+ .cx-creative .cx-home-stage .cortex-daily{grid-template-columns:minmax(0,1fr) 110px;padding:23px;border-radius:6px}
+ .cx-creative .cx-home-stage .cortex-daily h2{font-size:23px}
+ .cx-creative .cx-home-stage .cortex-daily .cortex-goal-ring{width:110px;height:110px}
+ .cx-creative .cx-home-stage .cortex-professor{order:5;padding:20px 0;gap:18px}
+ .cx-creative .cx-home-stage .cortex-mission{order:3}
+ .cx-creative .cx-home-stage .cortex-lab-invite{order:4;padding:24px 22px;grid-template-columns:minmax(0,1fr) 36%;gap:10px;min-height:235px;border-radius:6px}
+ .cx-creative .cx-home-stage .cortex-lab-invite h2{font-size:25px}
+ .cx-creative .cx-home-stage .cortex-lab-invite .cx-discovery-scene{min-height:160px}
+ .cx-creative .cx-mode-grid{grid-template-columns:1fr}
+ .cx-creative .cx-mode-card,.cx-creative .cx-mode-card.tone-1,.cx-creative .cx-mode-card.tone-2{min-height:210px;margin-top:0;padding:25px;border-radius:5px}
+ .cx-creative .cx-learning-grid{grid-template-columns:1fr}
+ .cx-creative .cx-learning-card{padding:22px 0}
+ .cx-creative .cx-learning-copy strong{font-size:19px}
+ .cx-creative .cortex-region-atlas{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px}
+ .cx-creative .cortex-region-place h3{font-size:18px}
+ .cx-creative .cortex-lab-banner>div{width:78%;padding:24px}
+}
+@media(max-width:360px){
+ .cx-creative .cx-home-stage .cortex-daily{grid-template-columns:minmax(0,1fr) 95px;padding:18px}
+ .cx-creative .cx-home-stage .cortex-daily .cortex-goal-ring{width:95px;height:95px}
+ .cx-creative .cx-home-stage .cortex-daily h2{font-size:20px}
+ .cx-creative .cx-home-stage .cortex-quest-dots i{width:21px;height:21px}
+ .cx-creative .cx-home-stage .cortex-lab-invite{grid-template-columns:minmax(0,1fr) 30%}
+}

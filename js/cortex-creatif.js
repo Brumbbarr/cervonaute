@@ -23,7 +23,11 @@
  root.V8.areneSvg=(i,name)=>'<img class="cortex-region-image" src="'+scenePath(Math.max(0,Math.min(8,i))+1)+'" alt="'+root.CortexCards.escape(name||root.CortexUI.regionNames[i])+'" width="1200" height="675" decoding="async">';
  root.ARENES.forEach((a,i)=>a.image=scenePath(i+1));
  const originalAccueil=root.CortexUI.accueil;
- root.CortexUI.accueil=c=>originalAccueil(c).replace('Une lumière douce traverse les premières ruines.','La curiosité fait pousser des mondes inattendus.').replace('La poussière des archives cache de nouvelles pistes.','Les idées ne tiennent plus en place. À toi de suivre leur trace.');
+ root.CortexUI.accueil=c=>'<div class="cx-home-stage">'+originalAccueil(c).replace('Une lumière douce traverse les premières ruines.','La curiosité fait pousser des mondes inattendus.').replace('La poussière des archives cache de nouvelles pistes.','Les idées ne tiennent plus en place. À toi de suivre leur trace.').replace('Ta prochaine<br>découverte ?','Ta prochaine découverte ?')+'</div>';
+ for(const [method,layout]of [['explorer','cx-expedition-layout'],['etudier','cx-study-layout']]){
+  const original=root.CortexUI[method];
+  root.CortexUI[method]=c=>'<div class="'+layout+'">'+original(c)+'</div>';
+ }
  if(root.CortexPreview){
   const mount=root.CortexPreview.mount;
   root.CortexPreview.mount=function(){mount.call(this);const notice=document.querySelector('.cortex-preview');if(notice)notice.textContent='Aperçu · ta progression et ta collection restent inchangées.'};

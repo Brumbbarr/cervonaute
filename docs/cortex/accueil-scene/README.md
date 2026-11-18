@@ -1,5 +1,11 @@
 # Recherche d’accueil — une scène commune
 
+## Révision 2 — informations mieux délimitées
+
+Retour utilisateur : la première scène est trop fondue ; les informations se perdent. Révision sur le même aperçu : en-tête opaque, paysage conservant ses couleurs, zone d’entraînement opaque et contrastée, prochaine escale sur une surface de lecture et trois zones contiguës teintées pour mission/objectif/collection. Les titres sont explicites, les chiffres plus grands, le décor ne passe plus sous les informations. La hauteur du paysage est réduite pour rendre les trois repères visibles sur un écran 1920 × 1080. Sur téléphone, l’image précède le bloc d’action puis les informations se lisent verticalement. Aucun changement du design normal v4.0.
+
+Vérification supplémentaire : contraste texte/fond des cinq repères principaux au moins 4,5:1, action et trois catégories présentes dans le premier écran en 1080p. Navigation, données fictives et sept tailles vérifiées à nouveau. Paramètre `recherche=2` et fichiers d’aperçu versionnés pour afficher cette passe lors de la comparaison.
+
 Accord utilisateur du 18 novembre 2026 : travailler un seul accueil complet avant de décliner la direction sur les autres pages. Le problème relevé est l’absence d’unité entre les bulles et l’en-tête, malgré les nouvelles formes. Cette recherche conserve le graphisme publié et ne s’active que dans un aperçu distinct.
 
 ## Accès et portée

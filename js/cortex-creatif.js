@@ -1,6 +1,7 @@
 // Direction créative V2 : présentation uniquement, aucune donnée joueur écrite.
 (function(root){
  document.body.classList.add('cx-creative');
+ document.body.classList.add('cx-organic');
  const themes=[
   ['#6050cf','#dff7ed','#c5bcf1','#fff0b4','#e5e4ff'],
   ['#3564b9','#def5ff','#b8d8ed','#ffe0cc','#ddeeff'],
@@ -23,7 +24,12 @@
  root.V8.areneSvg=(i,name)=>'<img class="cortex-region-image" src="'+scenePath(Math.max(0,Math.min(8,i))+1)+'" alt="'+root.CortexCards.escape(name||root.CortexUI.regionNames[i])+'" width="1200" height="675" decoding="async">';
  root.ARENES.forEach((a,i)=>a.image=scenePath(i+1));
  const originalAccueil=root.CortexUI.accueil;
- root.CortexUI.accueil=c=>'<div class="cx-home-stage">'+originalAccueil(c).replace('Une lumière douce traverse les premières ruines.','La curiosité fait pousser des mondes inattendus.').replace('La poussière des archives cache de nouvelles pistes.','Les idées ne tiennent plus en place. À toi de suivre leur trace.').replace('Ta prochaine<br>découverte ?','Ta prochaine découverte ?')+'</div>';
+ const discovery=()=>'<span class="cx-discovery-scene cx-discovery-v40"><img src="assets/cortex-ui/creatif/decouverte-v40.webp" alt="Une géode mystérieuse à examiner" width="850" height="850"></span>';
+ root.V8.coffreGrand=discovery;
+ root.CortexReveal.scene=discovery;
+ // Présentation statique assumée : aucune fausse ouverture lumineuse sur une image aplatie.
+ root.CortexReveal.ouvrir=async button=>{if(!button?.isConnected||button.disabled)return false;button.disabled=true;button.setAttribute('aria-label','Révélation de la découverte');return button.isConnected};
+ root.CortexUI.accueil=c=>'<div class="cx-home-stage">'+originalAccueil(c).replace('Une lumière douce traverse les premières ruines.','La curiosité fait pousser des mondes inattendus.').replace('La poussière des archives cache de nouvelles pistes.','Les idées ne tiennent plus en place. À toi de suivre leur trace.').replace('Ta prochaine<br>découverte ?','Une découverte t’attend.').replace('Ton petit défi du jour','Le rythme de tes découvertes').replace('Un peu chaque jour,<br>ça change tout.','Un pas de plus,<br>chaque jour.').replace('Un coffre à la clé','Une découverte à la clé').replace(/<(?:div|span) class="cx-discovery-scene[\s\S]*?<\/(?:div|span)>/,discovery())+'</div>';
  for(const [method,layout]of [['explorer','cx-expedition-layout'],['etudier','cx-study-layout']]){
   const original=root.CortexUI[method];
   root.CortexUI[method]=c=>'<div class="'+layout+'">'+original(c)+'</div>';

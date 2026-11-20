@@ -1,0 +1,93 @@
+/* Harmonisation V2 de tous les écrans : fond clair, cartes blanches arrondies, titres Archivo pleins,
+   accents pétrole / cyan / cuivre. Chargé en dernier ; préfixe body.cx-v2 pour passer devant les anciens thèmes. */
+body.v8.cortex-app.cx-v2{
+ --v2-ink:#0f3a44;--v2-teal:#0f6f7c;--v2-cyan:#2bb3c4;--v2-copper:#c9733a;--v2-mute:#4d6a70;--v2-bg:#f1f6f4;--v2-line:#dce8e6;
+ --v2-shadow:0 2px 12px rgba(15,58,68,.08);--v2-radius:22px;
+ --bg:var(--v2-bg);--ink:var(--v2-ink);--line:var(--v2-line);
+ --font-title:'Archivo','Trebuchet MS',system-ui,sans-serif;--font-text:'Inter',system-ui,sans-serif;
+ --cx-theme-ink:var(--v2-ink);--cx-theme-paper:#ffffff;--cx-theme-line:var(--v2-line);--cx-theme-mist:#e6f3f4;--cx-theme-secondary:var(--v2-copper);
+ color:var(--v2-ink)}
+body.v8.cortex-app.cx-v2:has(#app:not(.m-lobby)){background:var(--v2-bg) !important;background-image:none !important}
+/* Titres en largeur normale (fini l'effet condensé) */
+body.cx-v2 #app :is(h1,h2,h3,.big,.pts,b,strong){font-variation-settings:'wdth' 100 !important}
+body.cx-v2 #app:not(.m-lobby){max-width:40rem !important;width:100% !important;margin:0 auto !important;padding:18px 16px 120px !important}
+
+/* En-tête commun */
+body.cx-v2 .cortex-top{display:flex;align-items:center;gap:12px;border:0 !important;padding:0 0 4px !important;background:transparent !important}
+body.cx-v2 .cortex-brand{color:var(--v2-ink) !important}
+body.cx-v2 .cortex-brand-mark{background:var(--v2-ink) !important;color:#7fe3ee !important;border-radius:50% !important}
+body.cx-v2 .cortex-streak{background:#fbe9dc !important;color:#8a4316 !important;box-shadow:none !important;border-radius:18px !important;padding:8px 12px !important;font-size:12px !important;font-weight:700 !important}
+body.cx-v2 .cortex-avatar{border:3px solid var(--v2-copper) !important;background:#fff !important;color:var(--v2-ink) !important;border-radius:50% !important;box-shadow:none !important}
+
+/* Titres de page */
+body.cx-v2 .cortex-eyebrow,body.cx-v2 #app .label{font-family:var(--font-text) !important;font-size:11px !important;letter-spacing:.2em !important;font-weight:700 !important;color:var(--v2-teal) !important;text-transform:uppercase}
+body.cx-v2 .cortex-page-heading{text-align:left;padding:8px 0 4px !important;border:0 !important;background:transparent !important}
+body.cx-v2 .cortex-page-heading:after,body.cx-v2 .cortex-page-heading:before{display:none !important}
+body.cx-v2 .cortex-page-heading h1{font-family:var(--font-title) !important;font-weight:800 !important;font-size:clamp(26px,7vw,34px) !important;line-height:1.1 !important;letter-spacing:-.01em !important;color:var(--v2-ink) !important;margin:6px 0 !important}
+body.cx-v2 .cortex-page-heading p,body.cx-v2 #app .note,body.cx-v2 .cortex-gallery-note{color:var(--v2-mute) !important;font-size:13px !important;line-height:1.5}
+body.cx-v2 #app :is(h2,h3){font-family:var(--font-title) !important;font-weight:800 !important;color:var(--v2-ink) !important;letter-spacing:-.01em}
+body.cx-v2 .cortex-section-heading h2{font-size:21px !important}
+
+/* Cartes : blanches, arrondies, ombre douce */
+body.cx-v2 :is(.cx-study-intro,.cx-learning-card,.cx-mode-card,.cx-boss-card,.cortex-paper,.cortex-lab-banner,.cortex-family,.cortex-unknown,.cortex-region-place,.cx-targeted,.app>.card,.grid6>.card,.cortex-insigne,.arena){background:#fff !important;background-image:none !important;border:0 !important;border-radius:var(--v2-radius) !important;box-shadow:var(--v2-shadow) !important;color:var(--v2-ink) !important}
+body.cx-v2 :is(.cx-learning-card,.cx-mode-card,.cx-boss-card,.cortex-family){transition:transform .15s,box-shadow .15s}
+body.cx-v2 :is(.cx-learning-card,.cx-mode-card,.cx-boss-card,.cortex-family):hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(15,58,68,.12) !important}
+body.cx-v2 :is(.cx-learning-card,.cx-mode-card) p{color:var(--v2-mute) !important}
+body.cx-v2 #app .cx-study-intro{background:var(--v2-ink) !important;color:#eaf6f8 !important}
+body.cx-v2 #app .cortex-lab-banner{background:var(--v2-ink) url('../assets/cortex-ui/creatif/region-4-v2.webp') center/cover !important;overflow:hidden}
+body.cx-v2 .cortex-lab-banner>div{background:linear-gradient(90deg,rgba(15,58,68,.97),rgba(15,58,68,.85) 60%,rgba(15,58,68,0)) !important}
+body.cx-v2 #app :is(.cx-study-intro,.cortex-lab-banner) :is(h2,h3){color:#fff !important}
+body.cx-v2 #app :is(.cx-study-intro,.cortex-lab-banner) :is(p,small,span:not(.cortex-eyebrow)){color:#b9dde2 !important}
+body.cx-v2 #app :is(.cx-study-intro,.cortex-lab-banner) .cortex-eyebrow{color:#7fe3ee !important}
+body.cx-v2 .cx-study-intro svg{color:#7fe3ee !important}
+/* Pastilles d'icône : cuivre et cyan au lieu des pastels */
+body.cx-v2 :is(.cx-learning-icon,.cx-mode-icon,.cortex-family-icon){background:#fbe9dc !important;color:var(--v2-copper) !important;border:0 !important;border-radius:14px !important;box-shadow:none !important}
+body.cx-v2 :is(.cx-learning-icon.tone-1,.cx-mode-card.tone-1 .cx-mode-icon){background:#dff4f6 !important;color:var(--v2-teal) !important}
+body.cx-v2 :is(.cx-learning-icon.tone-2,.cx-mode-card.tone-2 .cx-mode-icon){background:#e3ecee !important;color:var(--v2-ink) !important}
+body.cx-v2 .cx-duration,body.cx-v2 .cx-optional{background:#eef5f4 !important;color:var(--v2-teal) !important;border:0 !important;box-shadow:none !important;border-radius:12px !important}
+body.cx-v2 :is(.cx-learning-footer,.cx-mode-footer){border-color:var(--v2-line) !important;color:var(--v2-teal) !important}
+/* Grands numéros décoratifs plus discrets */
+body.cx-v2 .cx-learning-card:before,body.cx-v2 .cx-mode-card:before,body.cx-v2 .cx-mode-card:after{color:rgba(15,58,68,.05) !important;-webkit-text-stroke:0 !important}
+
+/* Fini le Georgia : tout passe en Archivo (titres) et Inter (texte) */
+body.cx-v2 :is(.q,.mode b,.salle-h b,.res-h .big,.cortex-family strong,.cortex-unknown strong,.cortex-insigne b,.cortex-brand,.cortex-avatar,.cortex-seal,.cx-detail h2,.cx-hero h1,.cortex-welcome h2,.cortex-album-locked span,.cortex-daily-number b,.cortex-rank-mini b,.tk h1,.tk h2,.tk h3,#app .pts,#app .grid6 .pts){font-family:var(--font-title) !important;font-weight:800 !important;font-variation-settings:'wdth' 100 !important}
+body.cx-v2 :is(.cortex-professor p,.cortex-artefact-layout blockquote p,.cx-note p,.cortex-welcome blockquote,.cx-hidden-hint){font-family:var(--font-text) !important}
+body.cx-v2 .q{font-size:23px !important;line-height:1.35 !important;color:var(--v2-ink) !important}
+body.cx-v2 .cortex-brand-mark{background:#fff url('../assets/cortex-ui/monogramme-cervonaute.svg') center/cover !important}
+body.cx-v2 .cortex-brand-mark svg{opacity:0}
+body.cx-v2 .cortex-brand small{font-family:var(--font-text) !important;color:var(--v2-mute) !important;letter-spacing:.12em !important}
+
+/* Boutons */
+body.cx-v2 .cortex-primary{background:var(--v2-ink) !important;color:#fff !important;border:0 !important;border-radius:999px !important;box-shadow:none !important;min-height:48px;padding:0 22px !important;font-weight:700 !important}
+body.cx-v2 .cortex-primary:hover{background:#15505d !important}
+body.cx-v2 .cortex-secondary{background:#fff !important;color:var(--v2-ink) !important;border:1.5px solid var(--v2-line) !important;border-radius:999px !important;box-shadow:none !important;min-height:44px;font-weight:700 !important}
+body.cx-v2 .cortex-text-button{color:var(--v2-teal) !important;font-weight:700 !important}
+body.cx-v2 :is(.cx-subject,.cortex-rank-filter) select,body.cx-v2 #app select{background-color:#fff !important;border:1.5px solid var(--v2-line) !important;border-radius:14px !important;color:var(--v2-ink) !important;box-shadow:none !important}
+body.cx-v2 .cx-subject{background:#fff !important;border:0 !important;border-radius:18px !important;box-shadow:var(--v2-shadow) !important}
+
+/* Jauges */
+body.cx-v2 :is(.cortex-meter,#app .bar){background:#dce8e6 !important;border-radius:99px !important;border:0 !important;box-shadow:none !important}
+body.cx-v2 :is(.cortex-meter i,#app .bar>div){background:var(--v2-cyan) !important;border-radius:99px !important}
+
+/* Labo : cartes d'artefacts */
+body.cx-v2 .cortex-unknown{background:#f7faf9 !important;border:2px dashed #cfdedc !important;box-shadow:none !important}
+body.cx-v2 .cortex-specimen{border-radius:16px !important}
+
+/* Écrans de question : fond clair, choix en cartes blanches */
+body.cx-v2 #app.m-match .opts button,body.cx-v2 #app .opts>*{background:#fff !important;border:2px solid transparent !important;border-radius:18px !important;box-shadow:var(--v2-shadow) !important;color:var(--v2-ink) !important;font-weight:600}
+body.cx-v2 #app .opts button:hover{border-color:var(--v2-cyan) !important}
+body.cx-v2 #app .hud .quit,body.cx-v2 #app .hud a.quit{background:#fff !important;border:0 !important;border-radius:999px !important;box-shadow:var(--v2-shadow) !important;color:var(--v2-ink) !important}
+
+/* La navigation flottante V2 remplace l'ancienne barre latérale sur ordinateur */
+body.cx-v2 .cortex-nav{display:none !important}
+@media(min-width:1000px){body.cx-v2 #app:not(.m-lobby){max-width:76rem !important;padding:28px 40px 120px !important}}
+
+/* Saisie et bouton Valider pendant les questions */
+body.cx-v2 #app #fillin{background:#fff !important;border:2px solid var(--v2-line) !important;border-radius:18px !important;box-shadow:none !important;color:var(--v2-ink) !important}
+body.cx-v2 #app #fillin:focus{border-color:var(--v2-cyan) !important;outline:0;box-shadow:0 0 0 4px rgba(43,179,196,.18) !important}
+body.cx-v2 #app button.go{background:var(--v2-ink) !important;color:#fff !important;border:0 !important;border-radius:999px !important;box-shadow:none !important}
+body.cx-v2 #app button.go:hover{background:#15505d !important}
+body.cx-v2 :is(.cx-learning-copy small,.cx-mode-card small){color:var(--v2-copper) !important;font-family:var(--font-text) !important;letter-spacing:.12em !important;font-weight:700 !important}
+body.cx-v2 .cx-boss-rules b{background:#eef5f4 !important;color:var(--v2-teal) !important;border:0 !important;border-radius:10px !important}
+body.cx-v2 .cx-boss-section{border-left-color:var(--v2-copper) !important}
+body.cx-v2 .cx-boss-card small{color:var(--v2-mute) !important}

@@ -1,6 +1,7 @@
 // Accueil V2 : arène ronde au centre (hublot), anneau de progression, satellites et carte du Cortex.
-// Remplace seulement l'accueil, son en-tête et sa navigation. Les autres écrans ne changent pas.
-// Pour revenir à l'ancien accueil : retirer ce script et css/cortex-accueil-v2.css de index.html.
+// Remplace l'accueil et son en-tête, et pose la navigation flottante sur tous les écrans.
+// css/cortex-v2-global.css harmonise les autres écrans (fond, cartes, titres, boutons).
+// Pour revenir à l'ancien accueil : retirer ce script, css/cortex-accueil-v2.css et css/cortex-v2-global.css de index.html.
 (function(root){
  const U=root.CortexUI,E=root.CortexCards.escape,I=U.icon,header=U.header,nav=U.nav;
  const scene=n=>'assets/cortex-ui/creatif/region-'+n+(n===1?'':'-v2')+'.webp';
@@ -8,13 +9,16 @@
  const serie=()=>{try{return root.stats().serie||0}catch(_){return 0}};
 
  U.header=c=>c.screen!=='lobby'?header(c):'';
- U.nav=screen=>screen!=='lobby'?nav(screen):`<nav class="cx2-nav" aria-label="Navigation principale">
-  <button data-act="salle">${I('book',22)}<span>Étudier</span></button>
-  <button data-act="labo">${I('lab',22)}<span>Le labo</span></button>
-  <button class="cx2-nav-center" data-act="lobby" aria-current="page" aria-label="Accueil">${I('compass',26)}</button>
-  <button data-act="jouer">${I('crystal',22)}<span>Explorer</span></button>
-  <button data-act="profil">${I('user',22)}<span>Carnet</span></button>
+ // Navigation flottante V2 sur tous les écrans (bouton central = accueil).
+ const cur=(screen,id)=>screen===id||(screen==='lecon'&&id==='salle')||(screen==='collection'&&id==='profil');
+ const tab=(screen,id,ic,label)=>`<button data-act="${id}"${cur(screen,id)?' aria-current="page"':''}>${I(ic,22)}<span>${label}</span></button>`;
+ U.nav=screen=>`<nav class="cx2-nav" aria-label="Navigation principale">
+  ${tab(screen,'salle','book','Étudier')}${tab(screen,'labo','lab','Le labo')}
+  <button class="cx2-nav-center" data-act="lobby"${screen==='lobby'?' aria-current="page"':''} aria-label="Accueil">${I('compass',26)}</button>
+  ${tab(screen,'jouer','crystal','Explorer')}${tab(screen,'profil','user','Carnet')}
  </nav>`;
+ document.body.classList.add('cx-v2');
+ document.addEventListener('DOMContentLoaded',()=>document.body.classList.add('cx-v2'));
 
  U.accueil=c=>{
   const q=c.quest,n=c.region.n,next=c.nextRegion;
